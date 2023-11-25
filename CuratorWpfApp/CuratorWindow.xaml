@@ -5,17 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CuratorWpfApp"
         mc:Ignorable="d"
-        Title="CuratorWindow" Height="450" Width="950"
-        SizeToContent="WidthAndHeight"
+        Title="CuratorWindow" Height="466.96" Width="950"
+        MinHeight="466.96"
+        SizeChanged="Window_SizeChanged"
         WindowStartupLocation="CenterScreen">
     <Grid>
+        <!--Background="LightSkyBlue"-->
         <StackPanel Orientation="Horizontal">
             <StackPanel HorizontalAlignment="Left" 
+                        Name="spLeft"
                         Width="150"
-                        Background="LightSkyBlue">
+                        Background="#c7e6fd">
                 <Button x:Name="btnReport"
                         Content="Отчет за семестр"
-                        Style="{StaticResource btnMenuStyle}"/>
+                        Style="{StaticResource btnMenuStyle}"
+                        />
                 <Button x:Name="btnStudentsList"
                         Content="Список студентов"
                         Style="{StaticResource btnMenuStyle}"/>
@@ -24,11 +28,12 @@
                         Style="{StaticResource btnMenuStyle}"/>
                 <Button Name="btnExit"
                         Content="Выйти из аккаунта"
-                        Style="{StaticResource btnMenuStyle}"/>
+                        Style="{StaticResource btnExitAccountStyle}"/>
             </StackPanel>
             <Frame Name="frameMain"
                    NavigationUIVisibility="Hidden"
-                   Width="800"
+                   MinWidth="800"
+                   MinHeight="450"
                    HorizontalAlignment="Right"
                    Background="AliceBlue"/>
 

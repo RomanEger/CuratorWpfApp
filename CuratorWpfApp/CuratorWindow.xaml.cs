@@ -23,5 +23,13 @@ namespace CuratorWpfApp
         {
             InitializeComponent();
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double x = (e.NewSize.Height-450)/50;
+            spLeft.Width = 150 + x*5;
+            btnReport.Margin = new Thickness(15, 15+x, 15, 15);
+            frameMain.Width = e.NewSize.Width - spLeft.Width;
+        }
     }
 }
