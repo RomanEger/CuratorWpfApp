@@ -1,5 +1,4 @@
 ﻿using CuratorWpfApp.Models.ServicesDB;
-using CuratorWpfApp.Pages.Main;
 using CuratorWpfApp.Services;
 using System;
 using System.Collections.Generic;
@@ -46,15 +45,11 @@ namespace CuratorWpfApp.Pages
             }
         }
 
-        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            MyFrame.frame.Navigate(new RegistrationPage());
-        }
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             string password;
-            if (tbPassword.Visibility == Visibility.Visible)
+            if (checkBoxx.IsChecked == true)
                 password = tbPassword.Text;
             else
                 password = pbPassword.Password;
@@ -62,16 +57,18 @@ namespace CuratorWpfApp.Pages
             SqlUsers sql = new SqlUsers();
             try
             {
-                var r = await sql.Login(tbLogin.Text, password);
+                var r = await sql.LoginAsync(tbLogin.Text, password);
                 if(r == 1)
                 {
                     CuratorWindow curatorWindow = new CuratorWindow();
                     curatorWindow.Show();
+                    Application.Current.MainWindow.Close();
                 }
-                else
+                else if(r == 2)
                 {
                     AdminWindow adminWindow = new AdminWindow();
                     adminWindow.Show();
+                    Application.Current.MainWindow.Close();
                 }
             }
             catch (Exception ex)

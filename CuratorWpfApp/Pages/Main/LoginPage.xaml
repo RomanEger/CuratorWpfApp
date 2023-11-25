@@ -10,63 +10,61 @@
 
     <Grid>
         <StackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Margin="30">
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="30">
             <Label 
-                Content="Добро пожаловать!"
-                HorizontalContentAlignment="Center"
-                FontSize="16"
-                FontWeight="SemiBold"/>
+                        Content="Добро пожаловать!"
+                        HorizontalContentAlignment="Center"
+                        FontSize="16"
+                        FontWeight="SemiBold"/>
         </StackPanel>
-
         <StackPanel 
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
             <StackPanel>
                 <Label 
-                    Content="Логин"
-                    HorizontalContentAlignment="Center"
-                    Width="80"/>
+                            Content="Логин"
+                            HorizontalContentAlignment="Center"
+                            Width="80"/>
                 <TextBox 
-                    x:Name="tbLogin"
-                    Style="{StaticResource tbLoginStyle}"/>
+                            x:Name="tbLogin"
+                            Style="{StaticResource tbLoginStyle}"
+                    Width="200.65"/>
                 <Label 
-                    Content="Пароль"
-                    HorizontalContentAlignment="Center"
-                    Width="80"/>
+                            Content="Пароль"
+                            HorizontalContentAlignment="Center"
+                            Width="80"/>
                 <TextBox
-                    Name="tbPassword"
-                    Style="{StaticResource tbLoginStyle}"/>
+                            Name="tbPassword" Width="200.65"
+                            Style="{StaticResource tbLoginStyle}"/>
                 <PasswordBox
-                    x:Name="pbPassword"
-                    Style="{StaticResource pbLoginStyle}"
-                    Margin="0 -20 0 0"/>
+                            x:Name="pbPassword" Width="200.65"
+                            Style="{StaticResource pbLoginStyle}"
+                            Margin="0 -20 0 0"/>
                 <CheckBox 
-                    Content="Показать пароль"
-                    Click="CheckBox_Click"
-                    HorizontalAlignment="Right"
-                    Margin="0 5"/>
+                    x:Name="checkBoxx"
+                            Content="Показать пароль"
+                            Click="CheckBox_Click"
+                            HorizontalAlignment="Right"
+                            Margin="0 5"/>
             </StackPanel>
             <Popup 
-                x:Name="popup1" 
-                StaysOpen="False" 
-                Placement="Center" 
-                AllowsTransparency="True">
+                        x:Name="popup1" 
+                        StaysOpen="False" 
+                        Placement="Center" 
+                        AllowsTransparency="True">
                 <Label
-                    Style="{StaticResource popupLabel}"
-                    Name="textBlock"/>
+                            Style="{StaticResource popupLabel}"
+                            Name="textBlock"/>
             </Popup>
             <StackPanel>
                 <Button 
-                    Click="btnLogin_Click"
-                    Name="btnLogin"
-                    Style="{StaticResource btnMenuStyle}"
-                    Content="Войти"/>
-                <Label
-                    Style="{StaticResource labelRefStyle}"
-                    Content="Нет аккаунта? Зарегистрироваться"
-                    MouseDown="Label_MouseDown"/>
+                            Click="btnLogin_Click"
+                            Name="btnLogin"
+                            Style="{StaticResource btnMenuStyle}"
+                            Content="Войти"
+                    Width="170.65"/>
             </StackPanel>
         </StackPanel>
     </Grid>
