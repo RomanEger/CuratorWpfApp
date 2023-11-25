@@ -16,7 +16,7 @@ namespace CuratorWpfApp.Models.ServicesDB
     {
         private string conStr = ConfigStr.ConStr;
 
-        public async Task<Users> GetUser(int id)
+        public async Task<Users> GetUserByIdAsync(int id)
         {
             using(IDbConnection db = new SqlConnection(conStr))
             {
@@ -25,7 +25,16 @@ namespace CuratorWpfApp.Models.ServicesDB
             }
         }
 
-        public async Task<int?> Login(string login, string password)
+        public async Task<Users> GetUserByLoginAsync(string login)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryFirstOrDefaultAsync<Users>($"SELECT * FROM UsersT WHERE Login='{login}'")
+                    ?? throw new Exception("Такого пользователя нет");
+            }
+        }
+
+        public async Task<int?> LoginAsync(string login, string password)
         {
             using (IDbConnection db = new SqlConnection(conStr))
             {
