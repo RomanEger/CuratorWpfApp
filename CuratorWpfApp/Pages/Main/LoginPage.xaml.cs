@@ -30,8 +30,7 @@ namespace CuratorWpfApp.Pages
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
-            var checkBox = sender as CheckBox;
-            if (checkBox.IsChecked == true)
+            if (checkBoxx.IsChecked == true)
             {
                 tbPassword.Visibility = Visibility.Visible;
                 tbPassword.Text = pbPassword.Password;
@@ -58,13 +57,13 @@ namespace CuratorWpfApp.Pages
             try
             {
                 var r = await sql.LoginAsync(tbLogin.Text, password);
-                if(r == 1)
+                if(r.Role_id == 1)
                 {
-                    CuratorWindow curatorWindow = new CuratorWindow();
+                    CuratorWindow curatorWindow = new CuratorWindow(r.Group_name);
                     curatorWindow.Show();
                     Application.Current.MainWindow.Close();
                 }
-                else if(r == 2)
+                else if(r.Role_id == 2)
                 {
                     AdminWindow adminWindow = new AdminWindow();
                     adminWindow.Show();
