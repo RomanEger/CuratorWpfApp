@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace CuratorWpfApp.Models.Enitities
 {
-    class Grades
+    class Certificates
     {
-        public int Id { get; set; }
+        public int Id {  get; set; }
         public int Student_id { get; set; }
-        public int Discipline_id { get; set; }
-        public int Grade { get; set; }
+        public string? Title { get; set; }
+        public string? Start_date { get; set; }
+        public string? End_date { get; set; }
     }
 }
