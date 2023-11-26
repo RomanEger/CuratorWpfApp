@@ -4,31 +4,26 @@
              xmlns:local="clr-namespace:CuratorWpfApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!--<Style TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                                BorderThickness="1"
-                                Padding="4,2" 
-                                BorderBrush="DarkGray" 
-                                CornerRadius="3" 
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
 
-            <!--<Setter Property="Background" Value="DodgerBlue"/>-->
+        
+        
+        <Style TargetType="StackPanel"
+               x:Key="spHeaderStyleBase">
+            <!--<Setter Property="Background" Value="#1e90dd"/>
+            <Setter Property="Height" Value="28"/>-->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0069CF"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="StackPanel"
+               x:Key="spHeaderStyle"
+               BasedOn="{StaticResource spHeaderStyleBase}">
+            <Setter Property="Width" Value="125"/>
+        </Style>
         
         <Style TargetType="Button"
                x:Key="btnMenuStyle">
@@ -98,6 +93,27 @@
             </Style.Triggers>
         </Style>
 
+        <Style TargetType="Button"
+               BasedOn="{StaticResource btnMenuStyle}"
+               x:Key="btnMenuTreeViewStyleBase">
+            <Setter Property="Background" Value="#5da1e3"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Width" Value="80"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"></Setter>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="Button"
+               BasedOn="{StaticResource btnMenuTreeViewStyleBase}"
+               x:Key="btnMenuTreeViewStyle">
+            <Setter Property="Width" Value="106"/>
+        </Style>
+
         <Style TargetType="Label"
                x:Key="popupLabel">
             <Setter Property="Background" Value="White"/>
@@ -108,8 +124,10 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="20"/>
         </Style>
-        
-        
+
+        <Style TargetType="TreeViewItem">
+            <Setter Property="Padding" Value="1"/>
+        </Style>
         
         <Style TargetType="TextBox"
                x:Key="tbLoginStyle">
@@ -137,5 +155,33 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="Label"
+               x:Key="labelTreeViewStyle">
+            <Setter Property="Background" Value="#1e90dd"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0069CF"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Trigger>
+            </Style.Triggers>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"></Setter>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Margin" Value="15"/>
+        </Style>
+                
+            
     </Application.Resources>
 </Application>
