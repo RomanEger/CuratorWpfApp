@@ -34,11 +34,11 @@ namespace CuratorWpfApp.Models.ServicesDB
             }
         }
 
-        public async Task<int?> LoginAsync(string login, string password)
+        public async Task<Users?> LoginAsync(string login, string password)
         {
             using (IDbConnection db = new SqlConnection(conStr))
             {
-                return await db.QueryFirstOrDefaultAsync<int?>($"SELECT Role_id FROM UsersT WHERE Login='{login}' AND Password='{password}'")
+                return await db.QueryFirstOrDefaultAsync<Users?>($"SELECT * FROM UsersT WHERE Login='{login}' AND Password='{password}'")
                     ?? throw new Exception("Некорректный логин или пароль");
             }
         }
