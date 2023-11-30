@@ -22,38 +22,34 @@ namespace CuratorWpfApp
     public partial class CuratorWindow : Window
     {
         private string groupName;
+        navigateDelegate<StudentsListPage> navigate;
+
         public CuratorWindow(string GroupName)
         {
             InitializeComponent();
+
             groupName = GroupName;
+
+            MyFrame.frame = frameMain;
+
+            navigate = Navigate;
+
+            navigate?.Invoke(new StudentsListPage(groupName));
         }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            double x = (e.NewSize.Height-450)/50;
-            spLeft.Width = 150 + x*5;
-            //btnReport.Margin = new Thickness(15, 15+x, 15, 15);
-            frameMain.Width = e.NewSize.Width - spLeft.Width;
-            Style style = new Style()
-            {
-                TargetType = typeof(StackPanel)
-            };
-            style.BasedOn = (Style)Application.Current.Resources["spHeaderStyleBase"];
-            style.Setters.Add(new Setter(WidthProperty, 125+x*5));
-            Application.Current.Resources["spHeaderStyle"] = style;
-
-            Style style1 = new Style()
-            {
-                TargetType = typeof(StackPanel)
-            };
-            style1.BasedOn = (Style)Application.Current.Resources["spHeaderStyleBase"];
-            style1.Setters.Add(new Setter(WidthProperty, 125 + x * 5));
-            Application.Current.Resources["spHeaderStyle"] = style1;
-        }
 
         private void btnStudentList_Click(object sender, RoutedEventArgs e)
         {
-            MyFrame.frame.Navigate(new StudentsListPage(groupName));
+            if (navigate == null)
+                navigate = Navigate;
+            navigate?.Invoke(new StudentsListPage(groupName));
+        }
+
+        delegate bool navigateDelegate<T>(T page) where T: Page;
+
+        public bool Navigate<T>(T page) where T : Page
+        {
+            return MyFrame.frame.Navigate(page);
         }
     }
 }

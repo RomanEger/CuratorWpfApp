@@ -28,6 +28,7 @@
                             HorizontalContentAlignment="Center"
                             Width="80"/>
                 <TextBox 
+                    Height="25"
                             x:Name="tbLogin"
                             Style="{StaticResource tbLoginStyle}"
                     Width="200.65"/>
@@ -36,12 +37,14 @@
                             HorizontalContentAlignment="Center"
                             Width="80"/>
                 <TextBox
+                    Height="25"
                             Name="tbPassword" Width="200.65"
                             Style="{StaticResource tbLoginStyle}"/>
                 <PasswordBox
+                    Height="25"
                             x:Name="pbPassword" Width="200.65"
                             Style="{StaticResource pbLoginStyle}"
-                            Margin="0 -20 0 0"/>
+                            Margin="0 -25 0 0"/>
                 <CheckBox 
                     x:Name="checkBoxx"
                             Content="Показать пароль"

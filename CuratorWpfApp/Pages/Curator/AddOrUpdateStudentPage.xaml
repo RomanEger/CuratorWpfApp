@@ -1,0 +1,140 @@
+﻿<Page x:Class="CuratorWpfApp.Pages.Curator.AddOrUpdateStudentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CuratorWpfApp.Pages.Curator"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AddOrUpdateStudentPage">
+
+    <Grid>
+        <ScrollViewer>
+            <StackPanel>
+                <Label 
+                    Margin="30"
+                    HorizontalAlignment="Center"
+                    Name="labelTitle"/>
+                <Image
+                    Height="200"
+                    Width="Auto"
+                    x:Name="imgChel"
+                    HorizontalAlignment="Center"/>
+                <Button
+                    Name="btnChangePhoto"
+                    MinWidth="130"
+                    Click="btnChangePhoto_Click"
+                    Style="{StaticResource btnMenuStyle}"
+                    HorizontalAlignment="Center"/>
+                <StackPanel 
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <StackPanel 
+                        Margin="15"
+                        Orientation="Horizontal">
+                        <Label
+                            MinWidth="130"
+                            Content="Фамилия"/>
+                        <TextBox
+                            Name="tbLName"
+                            MinWidth="160"
+                            Style="{StaticResource tbLoginStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel 
+                        Margin="15"
+                        Orientation="Horizontal">
+                        <Label
+                            MinWidth="130"
+                            Content="День рождения"/>
+                        <DatePicker
+                            Background="White"
+                            FontSize="16"
+                            VerticalContentAlignment="Center"
+                            Name="tbBirthday"
+                            MinWidth="160"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel 
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <StackPanel 
+                        Margin="15"
+                        Orientation="Horizontal">
+                        <Label
+                            MinWidth="130"
+                            Content="Имя"/>
+                        <TextBox
+                            Name="tbFName"
+                            MinWidth="160"
+                            Style="{StaticResource tbLoginStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel 
+                        Margin="15"
+                        Orientation="Horizontal">
+                        <Label
+                            MinWidth="130"
+                            Content="Группа"/>
+                        <TextBox
+                            Name="tbGroupName"
+                            MinWidth="160"
+                            IsReadOnly="True"
+                            Style="{StaticResource tbLoginStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel 
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <StackPanel 
+                        Margin="15"
+                        Orientation="Horizontal">
+                        <Label
+                            MinWidth="130"
+                            Content="Отчество"/>
+                        <TextBox
+                            Name="tbPatronymic"
+                            MinWidth="160"
+                            Style="{StaticResource tbLoginStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel 
+                        Margin="15"
+                        Orientation="Horizontal">
+
+                        <Label
+                            MinWidth="130"
+                            Content="Приписное"/>
+                        <CheckBox
+                            Name="cbMilID"
+                            FontSize="14"
+                            MinWidth="160"
+                            VerticalContentAlignment="Center"
+                            Content="В наличии"
+                            IsChecked="False"/>
+
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                    <Button
+                        Name="btnSave"
+                        Click="btnSave_Click"
+                        MinWidth="100"
+                        Style="{StaticResource btnMenuStyle}"
+                        Content="Сохранить"/>
+                    <Button
+                        Name="btnBack"
+                        Click="btnBack_Click"
+                        MinWidth="100"
+                        Style="{StaticResource btnExitAccountStyle}"
+                        Content="Назад"/>
+                    
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

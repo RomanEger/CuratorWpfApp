@@ -5,133 +5,142 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CuratorWpfApp"
         mc:Ignorable="d"
-        Title="CuratorWindow" Height="466.96" Width="950"
-        MinHeight="466.96"
+        Title="CuratorWindow" Height="466" Width="950"
+        MinHeight="466"
         MinWidth="950"
-        SizeChanged="Window_SizeChanged"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="SingleBorderWindow"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <!--Background="LightSkyBlue"-->
-        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-            <StackPanel HorizontalAlignment="Left" 
-                        Name="spLeft"
-                        Width="150"
-                        Background="#c7e6fd">
-                <Label Content="Меню"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel 
+            Name="spLeft"
+            Background="#c7e6fd" >
+            <Label Content="Меню"
                                HorizontalContentAlignment="Center"
                                Margin="0 5"
                                FontWeight="SemiBold"/>
-                <TreeView Background="Transparent"
-                          BorderBrush="Transparent">
-                    <TreeViewItem>
-                        <TreeViewItem.Header>
-                            <StackPanel
+            <TreeView 
+                Name="treeViewMenu"
+                Background="Transparent"
+                BorderBrush="Transparent">
+                <TreeViewItem
+                    Name="StudentsTreeViewItem">
+                    <TreeViewItem.Header>
+                        <StackPanel
                                 Style="{DynamicResource spHeaderStyle}"
                                 HorizontalAlignment="Center">
-                                <Label 
-                                    Content="Отчеты"
-                                    Style="{StaticResource labelTreeViewStyle}"/>
-                            </StackPanel>
-                        </TreeViewItem.Header>
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <StackPanel>
-                                    <Button 
-                                         Style="{StaticResource btnMenuTreeViewStyle}"
-                                         Content="За семестр"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <StackPanel>
-                                    <Button 
-                                         Style="{StaticResource btnMenuTreeViewStyle}"
-                                         Content="За год"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                    </TreeViewItem>
-                    
-                    <TreeViewItem>
-                        <TreeViewItem.Header>
-                            <StackPanel
-                                Style="{DynamicResource spHeaderStyle}"
-                                HorizontalAlignment="Center">
-                                <Label 
+                            <Label 
+                                MinHeight="32"
                                     Style="{StaticResource labelTreeViewStyle}"
                                     Content="Студенты"/>
-                            </StackPanel>
-                        </TreeViewItem.Header>
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <StackPanel>
-                                    <Button 
+                        </StackPanel>
+                    </TreeViewItem.Header>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
                                         Name="btnStudentList"
                                         Click="btnStudentList_Click"
                                         Style="{StaticResource btnMenuTreeViewStyle}"
                                         Content="Список"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <StackPanel>
-                                    <Button 
-                                        Style="{StaticResource btnMenuTreeViewStyle}"
-                                        Content="Ред. список"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <StackPanel>
-                                    <Button 
-                                         Style="{StaticResource btnMenuTreeViewStyle}"
-                                         Content="Анкета студента"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <StackPanel>
-                                    <Button 
-                                         Style="{StaticResource btnMenuTreeViewStyle}"
-                                         Content="Справки"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                    </TreeViewItem>
-                  
-                    <TreeViewItem>
-                        <TreeViewItem.Header>
-                            <StackPanel
-                                Style="{DynamicResource spHeaderStyle}"
-                                HorizontalAlignment="Center">
-                                <Label 
-                                    Content="Оценки"
-                                    Style="{StaticResource labelTreeViewStyle}"/>
                             </StackPanel>
                         </TreeViewItem.Header>
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <StackPanel>
-                                    <Button 
+                    </TreeViewItem>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
+                                        Style="{StaticResource btnMenuTreeViewStyle}"
+                                        Content="Ред. список"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
+                                         Style="{StaticResource btnMenuTreeViewStyle}"
+                                         Content="Анкета студента"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
+                                         Style="{StaticResource btnMenuTreeViewStyle}"
+                                         Content="Справки"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                </TreeViewItem>
+                
+                <TreeViewItem 
+                    Name="ReportTreeViewItem">
+                    <TreeViewItem.Header>
+                        <StackPanel
+                                Style="{DynamicResource spHeaderStyle}"
+                                HorizontalAlignment="Center">
+                            <Label 
+                                MinHeight="32"
+                                    Content="Отчеты"
+                                    Style="{StaticResource labelTreeViewStyle}"/>
+                        </StackPanel>
+                    </TreeViewItem.Header>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
+                                         Style="{StaticResource btnMenuTreeViewStyle}"
+                                         Content="За семестр"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
+                                         Style="{StaticResource btnMenuTreeViewStyle}"
+                                         Content="За год"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                </TreeViewItem>
+
+                <TreeViewItem
+                    Name="CertificatesTreeViewItem">
+                    <TreeViewItem.Header>
+                        <StackPanel
+                                Style="{DynamicResource spHeaderStyle}"
+                                HorizontalAlignment="Center">
+                            <Label 
+                                MinHeight="32"
+                                    Content="Оценки"
+                                    Style="{StaticResource labelTreeViewStyle}"/>
+                        </StackPanel>
+                    </TreeViewItem.Header>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
                                          Style="{StaticResource btnMenuTreeViewStyle}"
                                          Content="Долги"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
+                            </StackPanel>
+                        </TreeViewItem.Header>
                     </TreeViewItem>
-                </TreeView>
-            </StackPanel>
-            <Frame Name="frameMain"
-                   NavigationUIVisibility="Hidden"
-                   MinWidth="800"
-                   MinHeight="450"
-                   HorizontalAlignment="Right"
-                   Background="AliceBlue"/>
-
+                </TreeViewItem>
+            </TreeView>
         </StackPanel>
+        <Frame 
+            Grid.Column="1"
+            x:Name="frameMain"
+            MinWidth="800"
+            MinHeight="450"
+            NavigationUIVisibility="Hidden"
+            Background="AliceBlue"/>
     </Grid>
 </Window>

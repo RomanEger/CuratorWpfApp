@@ -1,4 +1,6 @@
-﻿using CuratorWpfApp.Models.ServicesDB;
+﻿using CuratorWpfApp.Models.Enitities;
+using CuratorWpfApp.Models.ServicesDB;
+using CuratorWpfApp.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,18 +26,48 @@ namespace CuratorWpfApp.Pages.Curator
     {
         string groupName;
         SqlStudents sqlStudents;
+        List<Students> listStudents;
         public StudentsListPage(string GroupName)
         {
             InitializeComponent();
             groupName = GroupName;
             sqlStudents = new SqlStudents();
-            var list = GetStudentsAsync();
+            GetStudentsAsync();
         }
 
-        public async Task<IEnumerable> GetStudentsAsync()
+        public async void GetStudentsAsync()
         {
             var list = await sqlStudents.GetStudentsByGroupAsync(groupName);
-            return list;
+            listStudents = list.ToList();
+            dgStudents.ItemsSource = listStudents;
+        }
+
+        private void btnDelStudent_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnUpdStudent_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAddStudent_Click(object sender, RoutedEventArgs e)
+        {
+            MyFrame.frame.Navigate(new AddOrUpdateStudentPage(groupName));
+        }
+
+        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        {
+            int id = GetId();
+        }
+
+        private int GetId()
+        {
+            var index = dgStudents.SelectedIndex;
+            var info = listStudents[index];
+            int id = info.Id;
+            return id;
         }
     }
 }

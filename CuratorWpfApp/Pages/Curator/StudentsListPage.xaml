@@ -9,23 +9,84 @@
       Title="StudentsListPage">
 
     <Grid>
-        <StackPanel>
-            <DataGrid>
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="*"/>
-                    <DataGridTextColumn
-                        Width="*"/>
-                    <DataGridTextColumn
-                        Width="*"/>
-                    <DataGridTextColumn
-                        Width="*"/>
-                    <DataGridTextColumn
-                        Width="*"/>
-                    <DataGridTextColumn
-                        Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="8*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer
+            MinWidth="800" 
+            Grid.RowSpan="2">
+            <StackPanel
+                HorizontalAlignment="Center">
+                <Label 
+                    Margin="0 15 0 0"
+                    Grid.Row="0"
+                    HorizontalContentAlignment="Center"
+                    Content="Список студентов"/>
+                <DataGrid 
+                    Grid.Row="1"
+                    x:Name="dgStudents">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            x:Name="colId"
+                            Header="ID"
+                            Binding="{Binding Path=Id}"/>
+                        <DataGridTextColumn
+                            Header="ФИО"
+                            Binding="{Binding Path=Full_name}"/>
+                        <DataGridTextColumn
+                            Header="День рождения"
+                            Binding="{Binding Path=Birthday}"/>
+                        <DataGridTextColumn
+                            Header="Группа"
+                            Binding="{Binding Path=Group_name}"/>
+                        <DataGridCheckBoxColumn
+                            Header="Приписное"
+                            Binding="{Binding Path=Has_Military_id}"/>
+                        <DataGridTemplateColumn
+                            Header="Действия">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button 
+                                            Name="btnInfo"
+                                            Click="btnInfo_Click"
+                                            Content="Подробнее"
+                                            Margin="5 0"
+                                            MinWidth="100"
+                                            Style="{StaticResource btnMenuStyle}"/>
+                                        <Button
+                                            Name="btnUpdStudent"
+                                            Click="btnUpdStudent_Click"
+                                            Content="Изменить"
+                                            Margin="5 0"
+                                            MinWidth="100"
+                                            Style="{StaticResource btnMenuStyle}"/>
+                                        <Button 
+                                            Name="btnDelStudent"
+                                            Click="btnDelStudent_Click"
+                                            Content="Удалить"
+                                            Margin="5 0"
+                                            MinWidth="100"
+                                            Style="{StaticResource btnMenuStyle}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                    <Button 
+                        Name="btnAddStudent"
+                        Click="btnAddStudent_Click"
+                        Content="Добавить"
+                        MinWidth="100"
+                        Style="{StaticResource btnMenuStyle}"/>
+
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

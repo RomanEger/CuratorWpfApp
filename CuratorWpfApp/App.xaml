@@ -5,7 +5,10 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
-        
+        <Style TargetType="{x:Type Control}" x:Key="baseStyle">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
         
         <Style TargetType="StackPanel"
                x:Key="spHeaderStyleBase">
@@ -22,14 +25,15 @@
         <Style TargetType="StackPanel"
                x:Key="spHeaderStyle"
                BasedOn="{StaticResource spHeaderStyleBase}">
-            <Setter Property="Width" Value="125"/>
+            <Setter Property="MinWidth" Value="130"/>
         </Style>
         
         <Style TargetType="Button"
-               x:Key="btnMenuStyle">
+               x:Key="btnMenuStyle"
+               BasedOn="{StaticResource baseStyle}">
             <Setter Property="Background" Value="#1e90dd"/>
             <Setter Property="Foreground" Value="FloralWhite"/>
-            <Setter Property="Height" Value="28"/>
+            <Setter Property="MinHeight" Value="28"/>
             <Setter Property="Margin" Value="15"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -60,17 +64,18 @@
         </Style>
 
         <Style TargetType="Button"
-               x:Key="btnExitAccountStyle">
+               x:Key="btnExitAccountStyle"
+               BasedOn="{StaticResource baseStyle}">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Height" Value="28"/>
+            <Setter Property="MinHeight" Value="28"/>
             <Setter Property="Margin" Value="15"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Name="border" 
-                        BorderThickness="1"
-                        Background="{TemplateBinding Background}">
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
 
@@ -111,10 +116,12 @@
         <Style TargetType="Button"
                BasedOn="{StaticResource btnMenuTreeViewStyleBase}"
                x:Key="btnMenuTreeViewStyle">
-            <Setter Property="Width" Value="106"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Width" Value="120"/>
         </Style>
 
         <Style TargetType="Label"
+               BasedOn="{StaticResource baseStyle}"
                x:Key="popupLabel">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="Red"/>
@@ -125,21 +132,25 @@
             <Setter Property="Padding" Value="20"/>
         </Style>
 
-        <Style TargetType="TreeViewItem">
+        <Style TargetType="TreeViewItem"
+               BasedOn="{StaticResource baseStyle}">
             <Setter Property="Padding" Value="1"/>
         </Style>
-        
+
         <Style TargetType="TextBox"
+               BasedOn="{StaticResource baseStyle}"
                x:Key="tbLoginStyle">
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
         </Style>
 
         <Style TargetType="PasswordBox"
+               BasedOn="{StaticResource baseStyle}"
                x:Key="pbLoginStyle">
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
         </Style>
 
         <Style TargetType="Label"
+               BasedOn="{StaticResource baseStyle}"
                x:Key="labelRefStyle">
             <Setter Property="Foreground" Value="MediumBlue"/>
             <Setter Property="ContentTemplate">
@@ -157,6 +168,7 @@
         </Style>
 
         <Style TargetType="Label"
+               BasedOn="{StaticResource baseStyle}"
                x:Key="labelTreeViewStyle">
             <Setter Property="Background" Value="#1e90dd"/>
             <Setter Property="Height" Value="28"/>
@@ -178,10 +190,17 @@
         </Style>
 
         <Style TargetType="DataGrid">
-            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="IsReadOnly" Value="False"/>
             <Setter Property="Margin" Value="15"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="MinColumnWidth" Value="120"/>
         </Style>
-                
-            
+
+        <Style TargetType="Label"
+               BasedOn="{StaticResource baseStyle}">
+        </Style>
+
     </Application.Resources>
 </Application>

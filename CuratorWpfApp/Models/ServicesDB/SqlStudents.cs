@@ -18,7 +18,8 @@ namespace CuratorWpfApp.Models.ServicesDB
         {
             using(IDbConnection db = new SqlConnection(conStr))
             {
-                return await db.QueryAsync<Students>($"SELECT * FROM StudentsT WHERE Group_Name='{groupName}'");
+                var list = await db.QueryAsync<Students>($"SELECT * FROM StudentsT WHERE Group_Name='{groupName}'");
+                return list;
             }
         }
     }
