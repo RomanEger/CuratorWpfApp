@@ -1,23 +1,12 @@
 ﻿using CuratorWpfApp.Models.Enitities;
+using CuratorWpfApp.Models.ServicesDB;
 using CuratorWpfApp.Services;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CuratorWpfApp.Pages.Curator
 {
@@ -26,7 +15,11 @@ namespace CuratorWpfApp.Pages.Curator
     /// </summary>
     public partial class AddOrUpdateStudentPage : Page
     {
+        byte[] bytes;
         int idOperation;
+        string photo;
+        SqlQueryService sqlService = new SqlQueryService();
+        int id;
         public AddOrUpdateStudentPage(string groupName)
         {
             InitializeComponent();
@@ -49,11 +42,17 @@ namespace CuratorWpfApp.Pages.Curator
             var arr = student.Full_name.Split(' ');
 
             tbLName.Text = arr[0] ?? null;
+
             tbFName.Text = arr[1] ?? null;
+
             tbPatronymic.Text = arr[2] ?? null;
 
-            tbBirthday.Text = student.Birthday;
-            
+            DateTime dt;
+
+            var b = DateTime.TryParseExact(student.Birthday, "MM/dd/yyyy", null, DateTimeStyles.None, out dt);
+
+            tbBirthday.SelectedDate = dt;
+
             tbGroupName.Text = student.Group_name;
 
             cbMilID.IsChecked = student.Has_Military_id;
@@ -62,53 +61,85 @@ namespace CuratorWpfApp.Pages.Curator
 
             idOperation = 1;
 
-            Uri uri = new Uri($"pack://application:,,,/CuratorWpfApp;component/{student.Photo}");
-            BitmapImage bitmapImage = new BitmapImage(uri);
-            imgChel.Source = bitmapImage;
+            id = student.Id;
+            try
+            {
+                ImageService imageService = new ImageService();
+                imgChel.Source = imageService.ByteToImage(imageService.GetBytes(student.Id));//sqlService.GetImageFromDatabase(student.Id);
+            }
+            catch
+            {
+                imgChel.Source = null;
+            }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            if(idOperation == 0)
-            {
 
-            }
-            else if(idOperation == 1) 
+
+        private async void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(tbFName.Text) ||
+               string.IsNullOrEmpty(tbLName.Text) ||
+               string.IsNullOrEmpty(tbBirthday.Text) ||
+               string.IsNullOrEmpty(tbGroupName.Text) ||
+               imgChel.Source == null)
             {
-            
+                MessageBox.Show("Убедитесь, что заполнили все обязательные поля и попробуйте снова");
+                return;
+            }
+
+            try
+            {
+                string fullName;
+                bool hasMilitaryId = false;
+                if (string.IsNullOrEmpty(tbPatronymic.Text))
+                    fullName = tbLName.Text + ' ' + tbFName.Text;
+                else
+                    fullName = tbLName.Text + ' ' + tbFName.Text + ' ' + tbPatronymic.Text;
+                if (cbMilID.IsChecked == true)
+                    hasMilitaryId = true;
+                Students student = new Students()
+                {
+                    Id = id,
+                    Full_name = fullName,
+                    Birthday = tbBirthday.Text,
+                    Group_name = tbGroupName.Text,
+                    Photo = bytes,
+                    Has_Military_id = hasMilitaryId
+                };
+                if (idOperation == 0)
+                {
+                    var r = await sqlService.AddStudentAsync(student, photo);
+                    if (r > 0)
+                        MessageBox.Show("Студент добавлен");
+                }
+                else if (idOperation == 1)
+                {
+                    var r = await sqlService.UpdateStudentAsync(student, photo);
+                    if (r > 0)
+                        MessageBox.Show("Изменения сохранены");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            MyFrame.frame.GoBack();
+            MyFrame.frame.Navigate(new StudentsListPage(tbGroupName.Text));
         }
-
         private void btnChangePhoto_Click(object sender, RoutedEventArgs e)
         {
-            try
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf";
+            if (openFileDialog.ShowDialog() == true)
             {
-                OpenFileDialog fileDialog = new OpenFileDialog();
-                if (fileDialog.ShowDialog() == true)
-                {
-                    var s = fileDialog.FileName;
-                    var savePath = System.IO.Path.Combine("Resources", fileDialog.SafeFileName);
-                    //File.Copy(s, savePath, true);
-
-                    Uri uri = new Uri($"pack://application:,,,/CuratorWpfApp;component/{savePath}");
-                    
-                    BitmapImage bitmapImage = new BitmapImage(new Uri(s));
-                    imgChel.Source = bitmapImage;
-
-                    var p = new Microsoft.Build.Evaluation.Project(@"C:\projects\BabDb\test\test.csproj");
-                    p.AddItem("Compile", @"C:\projects\BabDb\test\test2\Class1.cs");
-                    p.Save();
-                }
+                bytes = File.ReadAllBytes(openFileDialog.FileName);
+                photo = "0x" + BitConverter.ToString(bytes).Replace("-", "");
+                imgChel.Source = new BitmapImage(new Uri(openFileDialog.FileName));
             }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Изображение не найдено");
-            }
+
         }
 
     }

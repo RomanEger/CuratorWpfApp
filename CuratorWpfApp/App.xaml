@@ -9,6 +9,40 @@
             <Setter Property="FontSize" Value="16" />
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+
+        <Style TargetType="{x:Type Button}" 
+               BasedOn="{StaticResource baseStyle}"
+               x:Key="superBtnStyle">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" Name="button" >
+                            <Grid>
+                                <Border BorderThickness="1,0,1,1" BorderBrush="Black" CornerRadius="{Binding ElementName=button, Path=CornerRadius}">
+                                    <Border.Effect>
+                                        <BlurEffect Radius="2" KernelType="Gaussian"/>
+                                    </Border.Effect>
+                                </Border>
+                                <Border BorderThickness="0,1,0,0" BorderBrush="White" Margin="2" Opacity="0.7" CornerRadius="{Binding ElementName=button, Path=CornerRadius}">
+                                    <Border.Effect>
+                                        <BlurEffect Radius="2" KernelType="Gaussian"/>
+                                    </Border.Effect>
+                                </Border>
+                                <ContentPresenter TextBlock.FontSize="{TemplateBinding FontSize}" TextBlock.FontFamily="{TemplateBinding FontFamily}" TextBlock.Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}"></ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#1E90DD" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+        </Style>
         
         <Style TargetType="StackPanel"
                x:Key="spHeaderStyleBase">
@@ -27,34 +61,13 @@
                BasedOn="{StaticResource spHeaderStyleBase}">
             <Setter Property="MinWidth" Value="130"/>
         </Style>
-        
+
         <Style TargetType="Button"
                x:Key="btnMenuStyle"
-               BasedOn="{StaticResource baseStyle}">
-            <Setter Property="Background" Value="#1e90dd"/>
+               BasedOn="{StaticResource superBtnStyle}">
             <Setter Property="Foreground" Value="FloralWhite"/>
             <Setter Property="MinHeight" Value="28"/>
             <Setter Property="Margin" Value="15"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                                BorderThickness="1"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"></Setter>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                </Style>
-            </Style.Resources>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#0059CF"/>
@@ -65,34 +78,14 @@
 
         <Style TargetType="Button"
                x:Key="btnExitAccountStyle"
-               BasedOn="{StaticResource baseStyle}">
-            <Setter Property="Background" Value="White"/>
+               BasedOn="{StaticResource superBtnStyle}">
+            <Setter Property="Background" Value="GhostWhite"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="MinHeight" Value="28"/>
             <Setter Property="Margin" Value="15"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                </Style>
-            </Style.Resources>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="GhostWhite"/>
+                    <Setter Property="Background" Value="WhiteSmoke"/>
                     <Setter Property="Cursor" Value="Hand"/>
                 </Trigger>
             </Style.Triggers>
@@ -117,7 +110,7 @@
                BasedOn="{StaticResource btnMenuTreeViewStyleBase}"
                x:Key="btnMenuTreeViewStyle">
             <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Width" Value="120"/>
+            <Setter Property="Width" Value="130"/>
         </Style>
 
         <Style TargetType="Label"
@@ -196,11 +189,68 @@
             <Setter Property="CanUserDeleteRows" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="MinColumnWidth" Value="120"/>
+            
+        </Style>
+
+        <Style 
+            BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" 
+            TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style
+            TargetType="{x:Type DataGridCell}">
+            <Setter Property="MinHeight" Value="35"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style TargetType="Label"
                BasedOn="{StaticResource baseStyle}">
         </Style>
 
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border BorderBrush="Black" BorderThickness="0.7" Name="cmbItem" >
+                            <Grid>
+                                <ContentPresenter TextBlock.FontSize="{TemplateBinding FontSize}" Margin="5" TextBlock.FontFamily="{TemplateBinding FontFamily}" TextBlock.Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" Content="{TemplateBinding Content}"></ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                            <Border BorderBrush="Black" 
+                                    Background="GhostWhite"
+                                    BorderThickness="0.7"
+                                    Name="cmbItem" >
+                                <Grid>
+                                    <ContentPresenter TextBlock.FontSize="{TemplateBinding FontSize}" Margin="5" TextBlock.FontWeight="DemiBold" TextBlock.FontFamily="{TemplateBinding FontFamily}" TextBlock.Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" Content="{TemplateBinding Content}"></ContentPresenter>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                </Trigger>
+            </Style.Triggers>
+            
+        </Style>
+        
     </Application.Resources>
 </Application>

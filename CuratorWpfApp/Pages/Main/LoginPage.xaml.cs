@@ -53,7 +53,7 @@ namespace CuratorWpfApp.Pages
             else
                 password = pbPassword.Password;
 
-            SqlUsers sql = new SqlUsers();
+            SqlQueryService sql = new SqlQueryService();
             try
             {
                 var r = await sql.LoginAsync(tbLogin.Text, password);

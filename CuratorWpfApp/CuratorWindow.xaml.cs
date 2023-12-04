@@ -1,4 +1,5 @@
-﻿using CuratorWpfApp.Pages.Curator;
+﻿using CuratorWpfApp.Models.ServicesDB;
+using CuratorWpfApp.Pages.Curator;
 using CuratorWpfApp.Services;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,12 @@ namespace CuratorWpfApp
     /// </summary>
     public partial class CuratorWindow : Window
     {
+        public bool Navigate<T>(T page) where T : Page
+        {
+            return MyFrame.frame.Navigate(page);
+        }
+
         private string groupName;
-        navigateDelegate<StudentsListPage> navigate;
 
         public CuratorWindow(string GroupName)
         {
@@ -32,24 +37,20 @@ namespace CuratorWpfApp
 
             MyFrame.frame = frameMain;
 
-            navigate = Navigate;
-
-            navigate?.Invoke(new StudentsListPage(groupName));
+            Navigate(new StudentsListPage(groupName));
         }
 
 
         private void btnStudentList_Click(object sender, RoutedEventArgs e)
         {
-            if (navigate == null)
-                navigate = Navigate;
-            navigate?.Invoke(new StudentsListPage(groupName));
+            Navigate(new StudentsListPage(groupName));
         }
 
-        delegate bool navigateDelegate<T>(T page) where T: Page;
 
-        public bool Navigate<T>(T page) where T : Page
+        private async void btnStudentProfile_Click(object sender, RoutedEventArgs e)
         {
-            return MyFrame.frame.Navigate(page);
+            SqlQueryService sqlService = new SqlQueryService();
+            Navigate(new StudentProfilePage(await sqlService.GetStudentsByGroupAsync(groupName)));
         }
     }
 }

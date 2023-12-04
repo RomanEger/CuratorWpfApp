@@ -25,7 +25,7 @@
                     Content="Список студентов"/>
                 <DataGrid 
                     Grid.Row="1"
-                    x:Name="dgStudents">
+                    x:Name="dgStudents" >
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             x:Name="colId"

@@ -5,17 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CuratorWpfApp"
         mc:Ignorable="d"
-        Title="CuratorWindow" Height="466" Width="950"
+        Title="CuratorWindow" Height="466" Width="1050"
         MinHeight="466"
-        MinWidth="950"
+        MinWidth="1050"
         SizeToContent="WidthAndHeight"
         WindowStyle="SingleBorderWindow"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="175"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
+        <Rectangle
+            Fill="#bde0ff"
+            Grid.Column="1"/>
         <StackPanel 
             Name="spLeft"
             Background="#c7e6fd" >
@@ -54,15 +57,8 @@
                         <TreeViewItem.Header>
                             <StackPanel>
                                 <Button 
-                                        Style="{StaticResource btnMenuTreeViewStyle}"
-                                        Content="Ред. список"/>
-                            </StackPanel>
-                        </TreeViewItem.Header>
-                    </TreeViewItem>
-                    <TreeViewItem>
-                        <TreeViewItem.Header>
-                            <StackPanel>
-                                <Button 
+                                    x:Name="btnStudentProfile"
+                                    Click="btnStudentProfile_Click"
                                          Style="{StaticResource btnMenuTreeViewStyle}"
                                          Content="Анкета студента"/>
                             </StackPanel>

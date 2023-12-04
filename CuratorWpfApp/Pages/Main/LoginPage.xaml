@@ -67,7 +67,7 @@
                             Name="btnLogin"
                             Style="{StaticResource btnMenuStyle}"
                             Content="Войти"
-                    Width="170.65"/>
+                    Width="120"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CuratorWpfApp.Models.Enitities
 {
@@ -16,7 +17,7 @@ namespace CuratorWpfApp.Models.Enitities
             set => birthday = value;
         }
         public string Group_name { get; set; }
-        public string Photo {  get; set; }
+        public byte[] Photo {  get; set; }
         public bool Has_Military_id { get; set; }
     }
 }

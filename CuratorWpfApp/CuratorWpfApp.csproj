@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Pages\Curator\RomanEger-31-ISP.jpg" />
-    <None Remove="Pages\Curator\ZhunusovRuslan-31-ISP.png" />
-    <None Remove="Resources\RomanEger-31-ISP.jpg" />
-    <None Remove="Resources\ZhunusovRuslan-31-ISP.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Pages\Admin\" />
   </ItemGroup>
 
@@ -23,13 +16,6 @@
     <PackageReference Include="Dapper" Version="2.1.24" />
     <PackageReference Include="Microsoft.Build" Version="17.7.2" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Pages\Curator\RomanEger-31-ISP.jpg" />
-    <Resource Include="Pages\Curator\ZhunusovRuslan-31-ISP.png" />
-    <Resource Include="Resources\RomanEger-31-ISP.jpg" />
-    <Resource Include="Resources\ZhunusovRuslan-31-ISP.png" />
   </ItemGroup>
 
 </Project>

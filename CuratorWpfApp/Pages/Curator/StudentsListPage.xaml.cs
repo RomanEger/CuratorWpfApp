@@ -25,31 +25,35 @@ namespace CuratorWpfApp.Pages.Curator
     public partial class StudentsListPage : Page
     {
         string groupName;
-        SqlStudents sqlStudents;
+        SqlQueryService sqlService = new SqlQueryService();
         List<Students> listStudents;
         public StudentsListPage(string GroupName)
         {
             InitializeComponent();
             groupName = GroupName;
-            sqlStudents = new SqlStudents();
             GetStudentsAsync();
         }
 
         public async void GetStudentsAsync()
         {
-            var list = await sqlStudents.GetStudentsByGroupAsync(groupName);
+            var list = await sqlService.GetStudentsByGroupAsync(groupName);
             listStudents = list.ToList();
             dgStudents.ItemsSource = listStudents;
         }
 
-        private void btnDelStudent_Click(object sender, RoutedEventArgs e)
+        private async void btnDelStudent_Click(object sender, RoutedEventArgs e)
         {
-
+            if(MessageBox.Show("Вы уверены, что хотите удалить студента из списка?", "Удаление", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await sqlService.DeleteStudentAsync(GetId());
+                GetStudentsAsync();
+            }
         }
 
-        private void btnUpdStudent_Click(object sender, RoutedEventArgs e)
+        private async void btnUpdStudent_Click(object sender, RoutedEventArgs e)
         {
-
+            var student = await sqlService.GetStudentByIdAsync(GetId());
+            MyFrame.frame.Navigate(new AddOrUpdateStudentPage(student));
         }
 
         private void btnAddStudent_Click(object sender, RoutedEventArgs e)
@@ -57,9 +61,9 @@ namespace CuratorWpfApp.Pages.Curator
             MyFrame.frame.Navigate(new AddOrUpdateStudentPage(groupName));
         }
 
-        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        private async void btnInfo_Click(object sender, RoutedEventArgs e)
         {
-            int id = GetId();
+            MyFrame.frame.Navigate(new StudentProfilePage(await sqlService.GetStudentsByGroupAsync(groupName), dgStudents.SelectedIndex));
         }
 
         private int GetId()

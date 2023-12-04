@@ -1,0 +1,143 @@
+﻿<Page x:Class="CuratorWpfApp.Pages.Curator.StudentProfilePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CuratorWpfApp.Pages.Curator"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="StudentProfilePage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.Column="0"
+           Grid.Row="0"
+           Fill="LightSteelBlue"/>
+        <Rectangle Grid.Column="0"
+                   Grid.Row="2"
+                   Fill="LightSteelBlue"/>
+        <Rectangle Grid.Column="1"
+                   Grid.Row="0"
+                   Fill="SteelBlue"/>
+        <Rectangle Grid.Column="1"
+                   Grid.Row="2"
+                   Fill="SteelBlue"/>
+        <Rectangle Grid.Column="0"
+                   Grid.Row="1"
+                   Fill="SteelBlue"/>
+        
+        <Image
+            MinWidth="250"
+            MaxWidth="450"
+            Margin="5"
+            x:Name="imgChel"
+            Grid.Row="0"
+            Grid.Column="0"/>
+
+        <StackPanel
+            Margin="5"
+            Grid.Row="2"
+            Grid.Column="0">
+
+            <TextBlock 
+                Margin="15 5"
+                TextWrapping="WrapWithOverflow"
+                Name="textBlockFullName"/>
+            <TextBlock 
+                Margin="15 5"
+                TextWrapping="WrapWithOverflow"
+                Name="textBlockGroupName"/>
+            <TextBlock 
+                Margin="15 5"
+                TextWrapping="WrapWithOverflow"
+                Name="textBlockBirthday"/>
+            <TextBlock 
+                Margin="15 5"
+                TextWrapping="WrapWithOverflow"
+                Name="textBlockMilId"/>
+        </StackPanel>
+        
+        <StackPanel
+            Margin="5"
+            Grid.Row="0"
+            Grid.Column="2">
+            <StackPanel
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button 
+                    Margin="5"
+                    Style="{StaticResource btnMenuStyle}"
+                    MinWidth="80"
+                    Content="Пред."
+                    Name="btnPresentProfile"
+                    Click="btnPresentProfile_Click"/>
+                <Button 
+                    Margin="5"
+                    Style="{StaticResource btnMenuStyle}"
+                    MinWidth="80"
+                    Content="След."
+                    Name="btnNextProfile"
+                    Click="btnNextProfile_Click">
+                </Button>
+                <Button 
+                    Margin="5"
+                    Style="{StaticResource btnExitAccountStyle}"
+                    MinWidth="80"
+                    Content="Назад"
+                    Name="btnBack"
+                    Click="btnBack_Click"/>
+            </StackPanel>
+            <StackPanel>
+                <ComboBox
+                    SelectionChanged="cmbDisciplines_SelectionChanged"
+                    HorizontalAlignment="Right"
+                    Name="cmbDisciplines"
+                    MinWidth="260"
+                    Margin="5"/>
+
+                <TextBlock 
+                    Name="textBlockDebt"
+                    HorizontalAlignment="Center"
+                    TextWrapping="WrapWithOverflow"/>
+                <DataGrid
+                    HorizontalAlignment="Center"
+                    Name="dgDebts"
+                    CanUserResizeColumns="False"
+                    IsReadOnly="True"
+                    MinWidth="328">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Header="Название дисциплины"
+                            Binding="{Binding Path=DisciplineName}"/>
+                        <DataGridTextColumn
+                            Header="Количество долгов"
+                            Binding="{Binding Path=CountDebts}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock 
+                    Name="textBlockAvg"/>
+                <TextBlock
+                    Name="textBlockGrades"
+                    TextWrapping="WrapWithOverflow"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <StackPanel 
+            Margin="5"
+            Grid.Row="2"
+            Grid.Column="2">
+            
+            
+        </StackPanel>
+    </Grid>
+</Page>
