@@ -189,7 +189,6 @@
             <Setter Property="CanUserDeleteRows" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="MinColumnWidth" Value="120"/>
-            
         </Style>
 
         <Style 
@@ -212,7 +211,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        
         <Style TargetType="Label"
                BasedOn="{StaticResource baseStyle}">
         </Style>

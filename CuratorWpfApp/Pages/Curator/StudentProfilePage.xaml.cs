@@ -24,7 +24,7 @@ namespace CuratorWpfApp.Pages.Curator
     /// </summary>
     public partial class StudentProfilePage : Page
     {
-        IEnumerable<Students> students;
+        //IEnumerable<Students> students;
 
         int semester;
 
@@ -44,7 +44,7 @@ namespace CuratorWpfApp.Pages.Curator
 
             this.index = index;
             
-            this.students = students;
+            //this.students = students;
 
             array = students.ToArray();
             try
@@ -59,15 +59,31 @@ namespace CuratorWpfApp.Pages.Curator
 
         public async void FillingPage(Students student, int semester)
         {
+            dgCertificates.ItemsSource = null;
+            try
+            {
+                var l = await sqlService.GetCertificatesByStudentIdAsync(student.Id);
+                foreach(var item in l)
+                {
+                    item.Start_date = item.Start_date?.Replace(" 00:00:00", "");
+                    item.End_date = item.End_date?.Replace(" 00:00:00", "");
+                }    
+                dgCertificates.ItemsSource = l;
+            }
+            catch
+            {
+
+            }
+
             textBlockDebt.Text = string.Empty;
             textBlockDebt.Visibility = Visibility.Collapsed;
             dgDebts.Visibility = Visibility.Collapsed;
             try
             {
-                var l = await sqlService.GetDebtByIdAsync(student.Id, semester);
+                var l = await sqlService.GetDebtByIStudentdAsync(student.Id, semester);
                 if(l.Count() > 0)
                 {
-                    textBlockDebt.Text = "Долги:";
+                    textBlockDebt.Text = "Долги";
                     textBlockDebt.Visibility= Visibility.Visible;
                     dgDebts.Visibility = Visibility.Visible;
                     dgDebts.ItemsSource = l;

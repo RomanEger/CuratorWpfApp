@@ -94,8 +94,8 @@ namespace CuratorWpfApp.Models.ServicesDB
             using(IDbConnection db = new SqlConnection(conStr))
             {
                 int idDiscipline = await db.QueryFirstOrDefaultAsync<int>(
-                    $"SELECT Id FROM Academic_disciplineT" +
-                    $"WHERE Teacher_full_name='{teacherFullName}' AND Name='{disciplineName}'");
+                    $"SELECT Id FROM Academic_disciplineT " +
+                    $"WHERE Teacher_full_name='{teacherFullName}' AND Name='{disciplineName}' ");
                 return await db.QueryAsync<int>($"SELECT Grade FROM GradesT WHERE Discipline_id={idDiscipline} AND Student_id={idStudent} AND Semester={semester}");
             }
         }
@@ -110,7 +110,7 @@ namespace CuratorWpfApp.Models.ServicesDB
             }
         }
 
-        public async Task<IEnumerable<Debt>> GetDebtByIdAsync(int idStudent, int semester)
+        public async Task<IEnumerable<Debt>> GetDebtByIStudentdAsync(int idStudent, int semester)
         {
             using(IDbConnection db = new SqlConnection(conStr))
             {
@@ -135,6 +135,14 @@ namespace CuratorWpfApp.Models.ServicesDB
                 for(int i = 0; i < nameArr.Length; i++)
                     debt.Add(new Debt() { DisciplineName = nameArr[i], CountDebts = count[i] });
                 return debt;
+            }
+        }
+
+        public async Task<IEnumerable<Certificates>> GetCertificatesByStudentIdAsync(int idStudent)
+        {
+            using( IDbConnection db = new SqlConnection( conStr ))
+            {
+                return await db.QueryAsync<Certificates>($"SELECT * FROM CertificatesT WHERE Student_id={idStudent}");
             }
         }
     }
