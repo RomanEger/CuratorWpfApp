@@ -141,9 +141,7 @@ namespace CuratorWpfApp.Models.ServicesDB
         public async Task<IEnumerable<Certificates>> GetCertificatesByStudentIdAsync(int idStudent)
         {
             using( IDbConnection db = new SqlConnection( conStr ))
-            {
                 return await db.QueryAsync<Certificates>($"SELECT * FROM CertificatesT WHERE Student_id={idStudent}");
-            }
         }
     }
 }

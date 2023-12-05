@@ -22,6 +22,11 @@
         <StackPanel 
             Name="spLeft"
             Background="#c7e6fd" >
+            <Button
+                x:Name="btnExitAcc"
+                Click="btnExitAcc_Click"
+                Content="Покинуть аккаунт"
+                Style="{StaticResource btnExitAccountStyle}"/>
             <Label Content="Меню"
                                HorizontalContentAlignment="Center"
                                Margin="0 5"

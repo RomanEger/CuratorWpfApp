@@ -52,5 +52,19 @@ namespace CuratorWpfApp
             SqlQueryService sqlService = new SqlQueryService();
             Navigate(new StudentProfilePage(await sqlService.GetStudentsByGroupAsync(groupName)));
         }
+
+        private void btnExitAcc_Click(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show(
+                "Вы уверены, что хотите выйти из аккаунта?", 
+                "Выход",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                MainWindow mainWindow = new MainWindow();   
+                mainWindow.Show();
+                Close();
+            }
+        }
     }
 }

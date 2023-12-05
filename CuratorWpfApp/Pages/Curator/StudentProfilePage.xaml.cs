@@ -59,6 +59,11 @@ namespace CuratorWpfApp.Pages.Curator
 
         public async void FillingPage(Students student, int semester)
         {
+            if (semester == 1)
+                btn1Semester.IsChecked = true;
+            else
+                btn2Semester.IsChecked = true;
+
             dgCertificates.ItemsSource = null;
             try
             {
@@ -160,6 +165,11 @@ namespace CuratorWpfApp.Pages.Curator
 
         private async void cmbDisciplines_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            await cmbFunc();
+        }
+
+        private async Task cmbFunc()
+        {
             if (cmbDisciplines.SelectedItem == null)
                 return;
 
@@ -203,6 +213,19 @@ namespace CuratorWpfApp.Pages.Curator
                 }
                 textBlockGrades.Text = string.Empty;
             }
+
+        }
+
+        private async void btn1Semester_Checked(object sender, RoutedEventArgs e)
+        {
+            semester = 1;
+            await cmbFunc();
+        }
+
+        private async void btn2Semester_Checked(object sender, RoutedEventArgs e)
+        {
+            semester = 2;
+            await cmbFunc();
         }
     }
 }
