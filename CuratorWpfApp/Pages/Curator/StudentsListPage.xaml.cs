@@ -73,5 +73,6 @@ namespace CuratorWpfApp.Pages.Curator
             int id = info.Id;
             return id;
         }
+
     }
 }

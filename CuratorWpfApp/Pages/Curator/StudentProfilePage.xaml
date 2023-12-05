@@ -23,16 +23,17 @@
            Grid.Row="0"
            Fill="LightSteelBlue"/>
         <Rectangle Grid.Column="0"
-                   Grid.Row="1"
-                   Fill="LightSteelBlue" Margin="0,2,0,0" Grid.RowSpan="2"/>
+                   Grid.Row="2"
+                   Fill="LightSteelBlue"/>
         <Rectangle Grid.Column="1"
                    Grid.Row="0"
                    Fill="SteelBlue"/>
         <Rectangle Grid.Column="1"
-                   Grid.Row="1"
-                   Fill="SteelBlue" Margin="0,2,0,0" Grid.RowSpan="2"/>
+                   Grid.Row="2"
+                   Fill="SteelBlue"/>
         <Rectangle Grid.Column="0"
-                   Fill="SteelBlue" Margin="0,270,0,0" Grid.RowSpan="2"/>
+                   Grid.Row="1"
+                   Fill="SteelBlue"/>
         <Image
             MinWidth="250"
             MaxWidth="450"
@@ -159,6 +160,7 @@
                        HorizontalAlignment="Center"
                        Text="Справки"/>
                     <DataGrid
+                        CanUserResizeColumns="False"
                         HorizontalAlignment="Center"
                         Name="dgCertificates"
                         IsReadOnly="True">

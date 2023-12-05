@@ -189,6 +189,7 @@
             <Setter Property="CanUserDeleteRows" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="MinColumnWidth" Value="120"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
         </Style>
 
         <Style 

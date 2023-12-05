@@ -28,53 +28,61 @@
                     x:Name="dgStudents" >
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                            x:Name="colId"
-                            Header="ID"
-                            Binding="{Binding Path=Id}"/>
+                            MinWidth="30"
+                            Width="auto"
+                                x:Name="colId"
+                                Header="ID"
+                                Binding="{Binding Path=Id}"/>
                         <DataGridTextColumn
-                            Header="ФИО"
-                            Binding="{Binding Path=Full_name}"/>
+                            Width="auto"
+                                    Header="ФИО"
+                                    Binding="{Binding Path=Full_name}"/>
                         <DataGridTextColumn
-                            Header="День рождения"
-                            Binding="{Binding Path=Birthday}"/>
+                            Width="auto"
+                                    Header="День рождения"
+                                    Binding="{Binding Path=Birthday}"/>
                         <DataGridTextColumn
-                            Header="Группа"
-                            Binding="{Binding Path=Group_name}"/>
+                            Width="auto"
+                                    Header="Группа"
+                                    Binding="{Binding Path=Group_name}"/>
                         <DataGridCheckBoxColumn
-                            Header="Приписное"
-                            Binding="{Binding Path=Has_Military_id}"/>
+                            Width="auto"
+                                    Header="Приписное"
+                                    Binding="{Binding Path=Has_Military_id}"/>
                         <DataGridTemplateColumn
-                            Header="Действия">
+                            Width="auto"
+                                    Header="Действия">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button 
-                                            Name="btnInfo"
-                                            Click="btnInfo_Click"
-                                            Content="Подробнее"
-                                            Margin="5 0"
-                                            MinWidth="100"
-                                            Style="{StaticResource btnMenuStyle}"/>
+                                                    Name="btnInfo"
+                                                    Click="btnInfo_Click"
+                                                    Content="Подробнее"
+                                                    Margin="5 0"
+                                                    MinWidth="100"
+                                                    Style="{StaticResource btnMenuStyle}"/>
                                         <Button
-                                            Name="btnUpdStudent"
-                                            Click="btnUpdStudent_Click"
-                                            Content="Изменить"
-                                            Margin="5 0"
-                                            MinWidth="100"
-                                            Style="{StaticResource btnMenuStyle}"/>
+                                                    Name="btnUpdStudent"
+                                                    Click="btnUpdStudent_Click"
+                                                    Content="Изменить"
+                                                    Margin="5 0"
+                                                    MinWidth="100"
+                                                    Style="{StaticResource btnMenuStyle}"/>
                                         <Button 
-                                            Name="btnDelStudent"
-                                            Click="btnDelStudent_Click"
-                                            Content="Удалить"
-                                            Margin="5 0"
-                                            MinWidth="100"
-                                            Style="{StaticResource btnMenuStyle}"/>
+                                                    Name="btnDelStudent"
+                                                    Click="btnDelStudent_Click"
+                                                    Content="Удалить"
+                                                    Margin="5 0"
+                                                    MinWidth="100"
+                                                    Style="{StaticResource btnMenuStyle}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+
                 <StackPanel 
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
