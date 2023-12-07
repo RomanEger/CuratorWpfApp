@@ -13,7 +13,7 @@ namespace CuratorWpfApp.Models.Enitities
         public string Full_name { get; set; }
         private string birthday;
         public string Birthday {
-            get { return birthday.Remove(10); }
+            get { return birthday.Replace(" 00:00:00", ""); }
             set => birthday = value;
         }
         public string Group_name { get; set; }

@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:CuratorWpfApp.Pages.Curator"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Loaded="Page_Loaded"
       Title="CertificatesPage">
 
     <Grid>
@@ -26,21 +27,62 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Header="ID"
+                                Binding="{Binding Path=Id}"
                                 />
                             <DataGridTextColumn
                                 Header="ФИО"
+                                Binding="{Binding Path=Full_name}"
                                 />
                             <DataGridTextColumn
                                 Header="Форма"
+                                Binding="{Binding Path=Title}"
                                 />
                             <DataGridTextColumn
                                 Header="Дата начала"
+                                Binding="{Binding Path=Start_date}"
                                 />
                             <DataGridTextColumn
                                 Header="Дата окончания"
+                                Binding="{Binding Path=End_date}"
                                 />
+                            <DataGridTemplateColumn
+                                Width="auto"
+                                Header="Действия">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            
+                                            <Button
+                                                Name="btnUpdCertificate"
+                                                Click="btnUpdCertificate_Click"
+                                                Content="Изменить"
+                                                Margin="5 0"
+                                                MinWidth="100"
+                                                Style="{StaticResource btnMenuStyle}"/>
+                                            <Button 
+                                                Name="btnDelCertificate"
+                                                Click="btnDelCertificate_Click"
+                                                Content="Удалить"
+                                                Margin="5 0"
+                                                MinWidth="100"
+                                                Style="{StaticResource btnMenuStyle}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <StackPanel 
+                         Orientation="Horizontal"
+                         HorizontalAlignment="Center">
+                        <Button 
+                             Name="btnAddCertificate"
+                             Click="btnAddCertificate_Click"
+                             Content="Добавить"
+                             MinWidth="100"
+                             Style="{StaticResource btnMenuStyle}"/>
+
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

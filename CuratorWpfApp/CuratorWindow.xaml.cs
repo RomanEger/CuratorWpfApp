@@ -66,5 +66,10 @@ namespace CuratorWpfApp
                 Close();
             }
         }
+
+        private void btnCertificates_Click(object sender, RoutedEventArgs e)
+        {
+            Navigate(new CertificatesPage(groupName));
+        }
     }
 }

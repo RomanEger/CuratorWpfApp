@@ -48,9 +48,6 @@
                             Width="130"
                             Content="День рождения"/>
                         <DatePicker
-                            Background="White"
-                            FontSize="16"
-                            VerticalContentAlignment="Center"
                             Name="tbBirthday"
                             Width="160"/>
                     </StackPanel>

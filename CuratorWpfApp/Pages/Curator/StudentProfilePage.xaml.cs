@@ -34,8 +34,11 @@ namespace CuratorWpfApp.Pages.Curator
 
         SqlQueryService sqlService = new SqlQueryService();
 
-        Students[] array;
+        Students[] studentsArray;
 
+        Students currentStudent;
+
+        List<Certificates> certificatesList;
         public StudentProfilePage(IEnumerable<Students> students, int index=0, int semester=1)
         {
             InitializeComponent();
@@ -43,18 +46,8 @@ namespace CuratorWpfApp.Pages.Curator
             this.semester = semester;
 
             this.index = index;
-            
-            //this.students = students;
 
-            array = students.ToArray();
-            try
-            {
-                FillingPage(array[index], semester);
-            }
-            catch
-            {
-                MessageBox.Show("Не удалось получить анкету");
-            }
+            studentsArray = students.ToArray();
         }
 
         public async void FillingPage(Students student, int semester)
@@ -72,8 +65,9 @@ namespace CuratorWpfApp.Pages.Curator
                 {
                     item.Start_date = item.Start_date?.Replace(" 00:00:00", "");
                     item.End_date = item.End_date?.Replace(" 00:00:00", "");
-                }    
-                dgCertificates.ItemsSource = l;
+                }
+                certificatesList = l.ToList();
+                dgCertificates.ItemsSource = certificatesList;
             }
             catch
             {
@@ -148,18 +142,30 @@ namespace CuratorWpfApp.Pages.Curator
 
         private void btnNextProfile_Click(object sender, RoutedEventArgs e)
         {
-            if (index < array.Length - 1)
-                FillingPage(array[++index], semester);
+            if (index < studentsArray.Length - 1)
+            {
+                currentStudent = studentsArray[++index];
+                FillingPage(currentStudent, semester);
+            }
             else
-                FillingPage(array[index = 0], semester);
+            {
+                currentStudent = studentsArray[index = 0];
+                FillingPage(currentStudent, semester);
+            }
         }
 
         private void btnPresentProfile_Click(object sender, RoutedEventArgs e)
         {
             if (index > 0)
-                FillingPage(array[--index], semester);
+            {
+                currentStudent = studentsArray[--index];
+                FillingPage(currentStudent, semester);
+            }
             else
-                FillingPage(array[index=array.Length-1], semester);
+            {
+                currentStudent = studentsArray[index = studentsArray.Length - 1];
+                FillingPage(currentStudent, semester);
+            }
 
         }
 
@@ -226,6 +232,49 @@ namespace CuratorWpfApp.Pages.Curator
         {
             semester = 2;
             await cmbFunc();
+        }
+
+        private void btnAddCertificate_Click(object sender, RoutedEventArgs e)
+        {
+            MyFrame.frame.Navigate(new AddOrUpdateCertificatePage(currentStudent));
+
+        }
+
+        private async void btnUpdCertificate_Click(object sender, RoutedEventArgs e)
+        {
+            var certificate = await sqlService.GetCertificateByIdAsync(GetId());
+            MyFrame.frame.Navigate(new AddOrUpdateCertificatePage(certificate, currentStudent.Group_name));
+        }
+
+        private int GetId()
+        {
+            var index = dgCertificates.SelectedIndex;
+            var info = certificatesList[index];
+            int id = info.Id;
+            return id;
+        }
+
+        private async void btnDelCertificate_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены, что хотите удалить студента из списка?", "Удаление", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await sqlService.DeleteCertificateAsync(GetId());
+                FillingPage(currentStudent, semester);
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                currentStudent = studentsArray[index];
+                FillingPage(currentStudent, semester);
+            }
+            catch
+            {
+                MessageBox.Show("Не удалось получить анкету");
+            }
+
         }
     }
 }

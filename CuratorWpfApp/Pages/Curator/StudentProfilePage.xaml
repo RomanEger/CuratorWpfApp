@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:CuratorWpfApp.Pages.Curator"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Loaded="Page_Loaded"
       Title="StudentProfilePage">
 
     <Grid>
@@ -174,9 +175,38 @@
                             <DataGridTextColumn
                                 Header="Дата окончания"
                                 Binding="{Binding Path=End_date}"/>
+                            <DataGridTemplateColumn
+                                Width="auto"
+                                Header="Действия">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button
+                                                Name="btnUpdCertificate"
+                                                Click="btnUpdCertificate_Click"
+                                                Content="Изменить"
+                                                Margin="5 0"
+                                                MinWidth="100"
+                                                Style="{StaticResource btnMenuStyle}"/>
+                                            <Button 
+                                                Name="btnDelCertificate"
+                                                Click="btnDelCertificate_Click"
+                                                Content="Удалить"
+                                                Margin="5 0"
+                                                MinWidth="100"
+                                                Style="{StaticResource btnMenuStyle}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-
+                    <Button 
+                         Name="btnAddCertificate"
+                         Click="btnAddCertificate_Click"
+                         Content="Добавить"
+                         Width="100"
+                         Style="{StaticResource btnMenuStyle}"/>
                 </StackPanel>
             </StackPanel>
 

@@ -73,6 +73,8 @@
                         <TreeViewItem.Header>
                             <StackPanel>
                                 <Button 
+                                    Name="btnCertificates"
+                                    Click="btnCertificates_Click"
                                          Style="{StaticResource btnMenuTreeViewStyle}"
                                          Content="Справки"/>
                             </StackPanel>

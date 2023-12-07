@@ -10,6 +10,11 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
+        <Style TargetType="DatePicker"
+               BasedOn="{StaticResource baseStyle}">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        
         <Style TargetType="{x:Type Button}" 
                BasedOn="{StaticResource baseStyle}"
                x:Key="superBtnStyle">

@@ -78,7 +78,7 @@ namespace CuratorWpfApp.Models.ServicesDB
             using (IDbConnection db = new SqlConnection(conStr))
             {
                 return await db.ExecuteAsync($"DELETE StudentsT WHERE Id={id}");
-            }
+            } 
         }
 
         public async Task<IEnumerable<string>> GetDisciplinesAsync(string groupName)
@@ -143,5 +143,61 @@ namespace CuratorWpfApp.Models.ServicesDB
             using( IDbConnection db = new SqlConnection( conStr ))
                 return await db.QueryAsync<Certificates>($"SELECT * FROM CertificatesT WHERE Student_id={idStudent}");
         }
+
+        public async Task<IEnumerable<CertificatesTable>> GetCertificatesByGroupAsync(string groupName)
+        {
+            using(IDbConnection db = new SqlConnection( conStr ))
+            {
+                var l = await db.QueryAsync<int>($"SELECT Id FROM StudentsT WHERE Group_name='{groupName}'");
+                var certificates = new List<CertificatesTable>();
+                foreach(var item in l)
+                {
+                    certificates.AddRange(await db.QueryAsync<CertificatesTable>(
+                        $"SELECT CertificatesT.Id, StudentsT.Full_name, CertificatesT.Title, " +
+                        $"CertificatesT.Start_date, CertificatesT.End_date FROM CertificatesT " +
+                        $"JOIN StudentsT " +
+                        $"ON CertificatesT.Student_id=StudentsT.Id " +
+                        $"WHERE Student_id={item}"));
+                }
+                var result = certificates.OrderBy(x=> x.Id);
+                return result;
+            }
+        }
+
+        public async Task<Certificates> GetCertificateByIdAsync(int id)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+                return await db.QueryFirstOrDefaultAsync<Certificates>($"SELECT * FROM CertificatesT WHERE Id={id}") ??
+                    throw new Exception("Справка не найдена");
+        }
+
+        public async Task<int> DeleteCertificateAsync(int id)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.ExecuteAsync($"DELETE CertificatesT WHERE Id={id}");
+            }
+
+        }
+
+        public async Task<int> UpdateCertificateAsync(Certificates certificate)
+        {
+            using(IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.ExecuteAsync("UPDATE CertificatesT " +
+                    $"SET Title='{certificate.Title}', Start_date='{certificate.Start_date}', End_date='{certificate.End_date}' " +
+                    $"WHERE Id={certificate.Id}");
+            }
+        }
+
+        public async Task<int> AddCertificateAsync(Certificates certificate)
+        {
+            using(IDbConnection db = new SqlConnection( conStr))
+            {
+                return await db.ExecuteAsync("INSERT CertificatesT " +
+                    $"VALUES ({certificate.Student_id}, '{certificate.Title}', '{certificate.Start_date}', '{certificate.End_date}')");
+            }
+        }
+
     }
 }
