@@ -10,5 +10,6 @@ namespace CuratorWpfApp.Models.Enitities
     {
         public string DisciplineName { get; set; }
         public int CountDebts { get; set; }
+        public string? StudentFullName {  get; set; }
     }
 }

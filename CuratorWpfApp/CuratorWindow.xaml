@@ -130,6 +130,8 @@
                         <TreeViewItem.Header>
                             <StackPanel>
                                 <Button 
+                                    Name="btnDebt"
+                                    Click="btnDebt_Click"
                                          Style="{StaticResource btnMenuTreeViewStyle}"
                                          Content="Долги"/>
                             </StackPanel>

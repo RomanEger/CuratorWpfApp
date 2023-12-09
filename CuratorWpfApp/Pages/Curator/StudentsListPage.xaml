@@ -21,6 +21,7 @@
                 <Label 
                     Margin="0 15 0 0"
                     Grid.Row="0"
+                    x:Name="labelTitle"
                     HorizontalContentAlignment="Center"
                     Content="Список студентов"/>
                 <DataGrid 
@@ -39,18 +40,16 @@
                                     Binding="{Binding Path=Full_name}"/>
                         <DataGridTextColumn
                             Width="auto"
+                            CanUserSort="False"
                                     Header="День рождения"
                                     Binding="{Binding Path=Birthday}"/>
-                        <DataGridTextColumn
-                            Width="auto"
-                                    Header="Группа"
-                                    Binding="{Binding Path=Group_name}"/>
                         <DataGridCheckBoxColumn
                             Width="auto"
                                     Header="Приписное"
                                     Binding="{Binding Path=Has_Military_id}"/>
                         <DataGridTemplateColumn
                             Width="auto"
+                            CanUserSort="False"
                                     Header="Действия">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

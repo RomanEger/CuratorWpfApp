@@ -104,7 +104,13 @@ namespace CuratorWpfApp.Models.ServicesDB
         {
             using( IDbConnection db = new SqlConnection(conStr))
             {
-                var grades = await db.QueryAsync<int>($"SELECT Grade FROM GradesT WHERE Student_id={idStudent} AND Semester={semester}");
+                var grades = await db.QueryAsync<int>(
+                    $"SELECT Grade FROM GradesT " +
+                    $"JOIN StudentsT AS s " +
+                    $"ON GradesT.Student_id=s.Id " +
+                    $"JOIN Academic_disciplineT AS a " +
+                    $"ON GradesT.Discipline_id=a.Id " +
+                    $"WHERE Student_id={idStudent} AND Semester={semester} AND a.Group_name=s.Group_name");
                 double avgGrade = Math.Round(grades.Average(),3);
                 return avgGrade;
             }
@@ -116,20 +122,24 @@ namespace CuratorWpfApp.Models.ServicesDB
             {
                 List<Debt> debt = new();
                 var name = await db.QueryAsync<string>(
-                    $"SELECT DISTINCT(Academic_disciplineT.Name) " +
+                    $"SELECT DISTINCT(a.Name) " +
                     $"FROM GradesT " +
-                    $"JOIN Academic_disciplineT " +
-                    $"ON GradesT.Discipline_id = Academic_disciplineT.Id " +
-                    $"WHERE Student_id={idStudent} AND Grade<=2 AND Semester={semester}");
+                    $"JOIN Academic_disciplineT AS a " +
+                    $"ON GradesT.Discipline_id = a.Id " +
+                    $"JOIN StudentsT AS s " +
+                    $"ON GradesT.Student_id=s.Id " +
+                    $"WHERE Student_id={idStudent} AND Grade<=2 AND Semester={semester} AND s.Group_name=a.Group_name");
                 List<int> count = new();
                 foreach(var item in name)
                 {
                     count.Add(await db.QueryFirstAsync<int>(
                         $"SELECT COUNT(Grade) " +
                         $"FROM GradesT " +
-                        $"JOIN Academic_disciplineT " +
-                        $"ON GradesT.Discipline_id = Academic_disciplineT.Id " +
-                        $"WHERE Student_id={idStudent} AND Grade<=2 AND Academic_disciplineT.Name='{item}' AND Semester={semester}"));
+                        $"JOIN Academic_disciplineT AS a " +
+                        $"ON GradesT.Discipline_id = a.Id " +
+                        $"JOIN StudentsT AS s " +
+                        $"ON GradesT.Student_id=s.Id " +
+                        $"WHERE Student_id={idStudent} AND Grade<=2 AND a.Name='{item}' AND Semester={semester} AND s.Group_name=a.Group_name"));
                 }
                 var nameArr = name.ToArray();
                 for(int i = 0; i < nameArr.Length; i++)
@@ -199,5 +209,19 @@ namespace CuratorWpfApp.Models.ServicesDB
             }
         }
 
+        public async Task<IEnumerable<Debt>> GetDebtByGroupAsync(string groupName)
+        {
+            using( IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryAsync<Debt>("SELECT a.Name AS DisciplineName, s.Full_name AS StudentFullName, COUNT(Grade) AS CountDebts " +
+                    "FROM GradesT AS g " +
+                    "JOIN StudentsT AS s " +
+                    "ON s.Id=g.Student_id " +
+                    "JOIN Academic_disciplineT AS a " +
+                    "ON a.Id=g.Discipline_id " +
+                    $"WHERE Grade <= 2 AND s.Group_name=a.Group_name AND s.Group_name='{groupName}' " +
+                    "GROUP BY GROUPING SETS((s.Full_name, a.Name)) ");
+            }
+        }
     }
 }

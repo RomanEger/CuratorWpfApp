@@ -32,6 +32,7 @@ namespace CuratorWpfApp.Pages.Curator
             InitializeComponent();
             groupName = GroupName;
             GetStudentsAsync();
+            labelTitle.Content = "Список студентов группы " + groupName;
         }
 
         public async void GetStudentsAsync()

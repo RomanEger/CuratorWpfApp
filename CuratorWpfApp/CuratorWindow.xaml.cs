@@ -71,5 +71,10 @@ namespace CuratorWpfApp
         {
             Navigate(new CertificatesPage(groupName));
         }
+
+        private void btnDebt_Click(object sender, RoutedEventArgs e)
+        {
+            Navigate(new DebtPage(groupName));
+        }
     }
 }
