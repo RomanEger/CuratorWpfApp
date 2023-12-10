@@ -130,6 +130,17 @@
                         <TreeViewItem.Header>
                             <StackPanel>
                                 <Button 
+                                    Name="btnJournal"
+                                    Click="btnJournal_Click"
+                                    Style="{StaticResource btnMenuTreeViewStyle}"
+                                    Content="Журнал"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
                                     Name="btnDebt"
                                     Click="btnDebt_Click"
                                          Style="{StaticResource btnMenuTreeViewStyle}"

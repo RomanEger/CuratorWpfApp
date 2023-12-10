@@ -76,5 +76,10 @@ namespace CuratorWpfApp
         {
             Navigate(new DebtPage(groupName));
         }
+
+        private void btnJournal_Click(object sender, RoutedEventArgs e)
+        {
+            Navigate(new JournalPage(groupName));
+        }
     }
 }

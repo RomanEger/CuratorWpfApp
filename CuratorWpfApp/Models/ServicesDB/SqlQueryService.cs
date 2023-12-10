@@ -223,5 +223,37 @@ namespace CuratorWpfApp.Models.ServicesDB
                     "GROUP BY GROUPING SETS((s.Full_name, a.Name)) ");
             }
         }
+        public class View
+        {
+            public string Full_name { get; set; }
+            public string Grades { get; set; }
+        }
+        public async Task<IEnumerable<View>> GetJournalAsync(string groupName, int disciplineId, int semester)
+        {
+            using(IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryAsync<View>(
+                    "select " +
+                    "z.Full_name, " +
+                    "(SELECT Grade FROM GradesT " +
+                    $"WHERE Discipline_id = {disciplineId} AND Student_id = z.Id AND Semester = {semester}" +
+                    $"FOR xml path('')) 'Grades' " +
+                    $"from StudentsT z " +
+                    $"inner join GradesT n " +
+                    $"on n.Student_id = z.Id " +
+                    $"group by z.Full_name, z.Id");
+            }
+        }
+
+        public async Task<int> GetIdAcademicDisciplinesAsync(string groupName, string title, string fullName)
+        {
+            using(IDbConnection db = new SqlConnection(conStr))
+            {
+                var q = "SELECT Id FROM Academic_disciplineT " +
+                    $"WHERE Group_name='{groupName}' AND Name='{title}' AND Teacher_full_name='{fullName}' ";
+                return await db.QueryFirstAsync<int>(
+                    q);
+            }
+        }
     }
 }

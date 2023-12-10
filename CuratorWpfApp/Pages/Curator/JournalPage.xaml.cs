@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CuratorWpfApp.Models.ServicesDB;
+using CuratorWpfApp.Services;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CuratorWpfApp.Pages.Curator
 {
@@ -20,9 +10,90 @@ namespace CuratorWpfApp.Pages.Curator
     /// </summary>
     public partial class JournalPage : Page
     {
-        public JournalPage()
+        string groupName;
+        SqlQueryService sqlService = new SqlQueryService();
+        int idDiscipline;
+        int semester = 1;
+        public JournalPage(string groupName)
         {
             InitializeComponent();
+            this.groupName = groupName;
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            MyFrame.frame.GoBack();
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (semester == 1)
+                btn1Semester.IsChecked = true;
+            else if (semester == 2)
+                btn2Semester.IsChecked = true;
+            try
+            {
+                var l = await sqlService.GetDisciplinesAsync(groupName);
+
+                cmbJournal.ItemsSource = l;
+
+            }
+            catch
+            {
+                cmbJournal.ItemsSource = null;
+            }
+        }
+
+        private async void cmbJournal_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await FillingDg();
+        }
+
+        private async Task FillingDg()
+        {
+            string[] separators = { "Название: ", "Преподаватель: " };
+            var arrData = cmbJournal.SelectedItem.ToString()?.Split(separators, StringSplitOptions.TrimEntries);
+            List<string> newArr = new();
+            foreach (var item in arrData)
+            {
+                if (!string.IsNullOrEmpty(item))
+                    newArr.Add(item);
+            }
+            try
+            {
+                idDiscipline = await sqlService.GetIdAcademicDisciplinesAsync(groupName, newArr[0], newArr[1]);
+
+                var l = await sqlService.GetJournalAsync(groupName, idDiscipline, semester);
+                var arr = l.ToArray();
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    arr[i].Grades = arr[i].Grades.Replace("</Grade><Grade>", " | ");
+                    arr[i].Grades = arr[i].Grades.Replace("<Grade>", "");
+                    arr[i].Grades = arr[i].Grades.Replace("</Grade>", "");
+                }
+                dgJournal.ItemsSource = arr;
+
+            }
+            catch
+            {
+                MessageBox.Show("Не удалось получить данные");
+                dgJournal.ItemsSource = null;
+            }
+
+        }
+
+        private async void btn1Semester_Checked(object sender, RoutedEventArgs e)
+        {
+            semester = 1;
+            if(cmbJournal.SelectedItem != null) 
+                await FillingDg();
+        }
+
+        private async void btn2Semester_Checked(object sender, RoutedEventArgs e)
+        {
+            semester = 2;
+            if(cmbJournal.SelectedItem != null) 
+                await FillingDg();
         }
     }
 }
