@@ -13,6 +13,6 @@ namespace CuratorWpfApp.Models.Enitities
         public int Discipline_id { get; set; }
         public int Grade { get; set; }
         public int Semester { get; set; }
-        public int Cource { get; set; }
+        public int Course { get; set; }
     }
 }

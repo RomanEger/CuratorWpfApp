@@ -98,20 +98,13 @@
                         <TreeViewItem.Header>
                             <StackPanel>
                                 <Button 
+                                    Name="btnReportSemester"
                                          Style="{StaticResource btnMenuTreeViewStyle}"
-                                         Content="За семестр"/>
+                                         Content="За семестр" Click="btnReportSemester_Click"/>
                             </StackPanel>
                         </TreeViewItem.Header>
                     </TreeViewItem>
-                    <TreeViewItem>
-                        <TreeViewItem.Header>
-                            <StackPanel>
-                                <Button 
-                                         Style="{StaticResource btnMenuTreeViewStyle}"
-                                         Content="За год"/>
-                            </StackPanel>
-                        </TreeViewItem.Header>
-                    </TreeViewItem>
+                   
                 </TreeViewItem>
 
                 <TreeViewItem

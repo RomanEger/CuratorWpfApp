@@ -19,5 +19,6 @@ namespace CuratorWpfApp.Models.Enitities
         public string Group_name { get; set; }
         public byte[] Photo {  get; set; }
         public bool Has_Military_id { get; set; }
+        public bool IsExpelled { get; set; } = false;
     }
 }

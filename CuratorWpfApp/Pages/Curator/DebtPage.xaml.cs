@@ -12,10 +12,12 @@ namespace CuratorWpfApp.Pages.Curator
     public partial class DebtPage : Page
     {
         string groupName;
+        private int semester ;
         public DebtPage(string groupName)
         {
             InitializeComponent();
             this.groupName = groupName;
+            semester = DateTime.Now.Month < 9 ? 2 : 1;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -27,7 +29,7 @@ namespace CuratorWpfApp.Pages.Curator
         {
             SqlQueryService sqlService = new();
 
-            var debtList = await sqlService.GetDebtByGroupAsync(groupName);
+            var debtList = await sqlService.GetDebtByGroupAsync(groupName, semester);
 
             var index = new List<int>();
 

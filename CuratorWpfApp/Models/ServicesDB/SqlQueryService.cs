@@ -1,15 +1,8 @@
 ﻿using CuratorWpfApp.Models.Enitities;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
 
 namespace CuratorWpfApp.Models.ServicesDB
 {
@@ -30,7 +23,7 @@ namespace CuratorWpfApp.Models.ServicesDB
         {
             using (IDbConnection db = new SqlConnection(conStr))
             {
-                var list = await db.QueryAsync<Students>($"SELECT * FROM StudentsT WHERE Group_Name='{groupName}'");
+                var list = await db.QueryAsync<Students>($"SELECT * FROM StudentsT WHERE Group_Name='{groupName}' AND IsExpelled=0");
                 return list;
             }
         }
@@ -39,7 +32,7 @@ namespace CuratorWpfApp.Models.ServicesDB
         {
             using (IDbConnection db = new SqlConnection(conStr))
             {
-                return await db.QueryFirstOrDefaultAsync<Students>($"SELECT * FROM StudentsT WHERE Id={id}") ??
+                return await db.QueryFirstOrDefaultAsync<Students>($"SELECT * FROM StudentsT WHERE Id={id} AND IsExpelled=0") ??
                     throw new Exception("Студент не найден");
             }
         }
@@ -50,7 +43,7 @@ namespace CuratorWpfApp.Models.ServicesDB
             {
                 int mil = Convert.ToInt32(student.Has_Military_id);
                 return await db.ExecuteAsync("INSERT StudentsT " +
-                    $"VALUES ('{student.Full_name}', '{student.Birthday}', '{student.Group_name}', {s}, {mil})");
+                    $"VALUES ('{student.Full_name}', '{student.Birthday}', '{student.Group_name}', {s}, {mil}, 0)");
             }
         }
 
@@ -63,21 +56,32 @@ namespace CuratorWpfApp.Models.ServicesDB
                 if (string.IsNullOrEmpty(photo))
                     return await db.ExecuteAsync("UPDATE StudentsT " +
                     $"SET Full_name='{student.Full_name}', Birthday='{student.Birthday}'," +
-                    $" Group_name='{student.Group_name}', Has_Military_id={mil}" +
+                    $" Group_name='{student.Group_name}', Has_Military_id={mil}, IsExpelled={student.IsExpelled}" +
                     $"WHERE Id={student.Id}");
 
                 return await db.ExecuteAsync("UPDATE StudentsT " +
                     $"SET Full_name='{student.Full_name}', Birthday='{student.Birthday}'," +
-                    $" Group_name='{student.Group_name}', Photo={photo}, Has_Military_id={mil}" +
+                    $" Group_name='{student.Group_name}', Photo={photo}, Has_Military_id={mil}, IsExpelled={student.IsExpelled}" +
                     $"WHERE Id={student.Id}");
             }
         }
 
-        public async Task<int> DeleteStudentAsync(int id)
+        /// <summary>
+        /// МЕТОД НЕ ГОТОВ
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="groupName"></param>
+        /// <param name="description"></param>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public async Task<int> ChangeStudentStatusAsync(int id, string groupName, string description, string dateTime)
         {
             using (IDbConnection db = new SqlConnection(conStr))
             {
-                return await db.ExecuteAsync($"DELETE StudentsT WHERE Id={id}");
+                return await db.ExecuteAsync(
+                    $"UPDATE StudentsT " +
+                    $"SET ..." +
+                    $"WHERE Id={id}");
             } 
         }
 
@@ -116,7 +120,7 @@ namespace CuratorWpfApp.Models.ServicesDB
             }
         }
 
-        public async Task<IEnumerable<Debt>> GetDebtByIStudentdAsync(int idStudent, int semester)
+        public async Task<IEnumerable<Debt>> GetDebtByIStudentIdAsync(int idStudent, int semester)
         {
             using(IDbConnection db = new SqlConnection(conStr))
             {
@@ -209,7 +213,7 @@ namespace CuratorWpfApp.Models.ServicesDB
             }
         }
 
-        public async Task<IEnumerable<Debt>> GetDebtByGroupAsync(string groupName)
+        public async Task<IEnumerable<Debt>> GetDebtByGroupAsync(string groupName, int semester)
         {
             using( IDbConnection db = new SqlConnection(conStr))
             {
@@ -219,7 +223,7 @@ namespace CuratorWpfApp.Models.ServicesDB
                     "ON s.Id=g.Student_id " +
                     "JOIN Academic_disciplineT AS a " +
                     "ON a.Id=g.Discipline_id " +
-                    $"WHERE Grade <= 2 AND s.Group_name=a.Group_name AND s.Group_name='{groupName}' " +
+                    $"WHERE Grade <= 2 AND s.Group_name=a.Group_name AND s.Group_name='{groupName}' AND g.Semester={semester} " +
                     "GROUP BY GROUPING SETS((s.Full_name, a.Name)) ");
             }
         }
@@ -253,6 +257,146 @@ namespace CuratorWpfApp.Models.ServicesDB
                     $"WHERE Group_name='{groupName}' AND Name='{title}' AND Teacher_full_name='{fullName}' ";
                 return await db.QueryFirstAsync<int>(
                     q);
+            }
+        }
+
+        public async Task<string> GetCuratorFullNameAsync(string groupName)
+        {
+            using(IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryFirstOrDefaultAsync<string>($"SELECT Full_name FROM UsersT WHERE Group_name='{groupName}' AND Role_id=1") ??
+                    throw new Exception($"Куратор группы {groupName} не найден");
+            }
+        }
+
+        public async Task<IEnumerable<Students>> GetStudentsByGroupAsOf1SeptemberAsync(string groupName)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryAsync<Students>($"SELECT * FROM StudentsAsOf1SeptemberT WHERE Group_name='{groupName}'");
+            }
+        }
+
+        public async Task<IEnumerable<Students>> GetStudentsWithoutDebtsByGroupAsync(string groupName, int semester)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                var q = await db.QueryAsync<int>(
+                    $"SELECT DISTINCT Student_id FROM GradesT " +
+                    $"WHERE Semester={semester} " +
+                    $"GROUP BY Student_id " +
+                    $"HAVING MIN(Grade) < 3");
+
+                var sb = new StringBuilder();
+                sb.Append("SELECT * FROM StudentsT " +
+                          $"WHERE Group_name='{groupName}' ");
+
+                if (q.Any())
+                {
+                    for (int i = 0; i < q.Count(); i++)
+                    {
+                        sb.Append($" AND Id <> {q.AsList()[i]}");
+                    }
+
+                }
+
+                return await db.QueryAsync<Students>(sb.ToString());
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetStudentsByAvgGradesAsync(string groupName, int semester, int course, double minAvgGrade, double maxAvgGrade = 5.1)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                string minAvg = minAvgGrade.ToString().Replace(',', '.');
+                string maxAvg = maxAvgGrade.ToString().Replace(',', '.');
+                var q = 
+                    "SELECT distinct Student_id FROM Final_GradesT " +
+                    "JOIN StudentsT AS S " +
+                    "ON S.Id=Final_GradesT.Student_id " +
+                    $"WHERE Group_name='{groupName}' AND Semester={semester} AND Course={course} AND Grade < 4 " +
+                    "GROUP BY Discipline_id, Student_id, Group_name " +
+                    $"HAVING AVG(Grade * 1.0) <= {minAvg}";
+                
+                var list = await db.QueryAsync<int>(q);
+
+                var sb = new StringBuilder("SELECT DISTINCT Full_name FROM Final_GradesT " +
+                                           "JOIN StudentsT AS S " +
+                                           "ON S.Id=Final_GradesT.Student_id ");
+                var enumerable = list as int[] ?? list.ToArray();
+                if (enumerable.Any())
+                {
+                    sb.Append($"WHERE Student_id <> {enumerable[0]} ");
+                    for (int i = 1; i < enumerable.Length; i++)
+                    {
+                        sb.Append($"AND Student_id <> {enumerable[0]} ");
+                    }
+                }
+                
+                sb.Append("GROUP BY Full_name " +
+                          $"HAVING AVG(Grade * 1.0) >= {minAvg} AND AVG(Grade * 1.0) < {maxAvg}");
+
+
+                return await db.QueryAsync<string>(sb.ToString());
+            }
+        }
+
+        public async Task<int> GetNiceProcent(string groupName, int semester, int course)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                var q =
+                    "DECLARE @countStd DECIMAL, @count3 DECIMAL, @count4 DECIMAL, @count5 DECIMAL, @niceProcent DECIMAL;" +
+
+                    "SET @count3 = (SELECT COUNT(Grade) FROM Final_GradesT " +
+                    "JOIN StudentsT " +
+                    "ON StudentsT.Id=Final_GradesT.Student_id " +
+                    $"WHERE Grade=3 AND Semester={semester} AND Course={course} AND StudentsT.Group_name='{groupName}');" +
+
+                    "SET @count4 = (SELECT COUNT(Grade) FROM Final_GradesT " +
+                    "JOIN StudentsT " +
+                    "ON StudentsT.Id=Final_GradesT.Student_id " +
+                    $"WHERE Grade=4 AND Semester={semester} AND Course={course} AND StudentsT.Group_name='{groupName}');" +
+
+                    "SET @count5 = (SELECT COUNT(Grade) FROM Final_GradesT " +
+                    "JOIN StudentsT " +
+                    "ON StudentsT.Id=Final_GradesT.Student_id " +
+                    $"WHERE Grade=5 AND Semester={semester} AND Course={course} AND StudentsT.Group_name='{groupName}');" +
+
+                    "SET @countStd = (SELECT COUNT(Id) FROM StudentsT " +
+                    $"WHERE Group_name='{groupName}');" +
+
+                    "SET @niceProcent = ((@count3+@count4+@count5)/@countStd)*100;" +
+
+                    "SELECT @niceProcent;";
+                return await db.QueryFirstOrDefaultAsync<int>(q);
+            }
+        }
+        
+        public async Task<int> GetGoodProcent(string groupName, int semester, int course)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                var q =
+                    "DECLARE @countStd DECIMAL, @count4 DECIMAL, @count5 DECIMAL, @goodProcent DECIMAL;" +
+
+                    "SET @count4 = (SELECT COUNT(Grade) FROM Final_GradesT " +
+                    "JOIN StudentsT " +
+                    "ON StudentsT.Id=Final_GradesT.Student_id " +
+                    $"WHERE Grade=4 AND Semester={semester} AND Course={course} AND StudentsT.Group_name='{groupName}');" +
+
+                    "SET @count5 = (SELECT COUNT(Grade) FROM Final_GradesT " +
+                    "JOIN StudentsT " +
+                    "ON StudentsT.Id=Final_GradesT.Student_id " +
+                    $"WHERE Grade=5 AND Semester={semester} AND Course={course} AND StudentsT.Group_name='{groupName}');" +
+
+                    "SET @countStd = (SELECT COUNT(Id) FROM StudentsT " +
+                    $"WHERE Group_name='{groupName}');" +
+
+                    "SET @goodProcent = ((@count4+@count5)/@countStd)*100;" +
+
+                    "SELECT @goodProcent;";
+                return await db.QueryFirstOrDefaultAsync<int>(q);
             }
         }
     }

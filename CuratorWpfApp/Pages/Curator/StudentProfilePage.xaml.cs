@@ -79,7 +79,7 @@ namespace CuratorWpfApp.Pages.Curator
             dgDebts.Visibility = Visibility.Collapsed;
             try
             {
-                var l = await sqlService.GetDebtByIStudentdAsync(student.Id, semester);
+                var l = await sqlService.GetDebtByIStudentIdAsync(student.Id, semester);
                 if(l.Count() > 0)
                 {
                     textBlockDebt.Text = "Долги";

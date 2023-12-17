@@ -54,7 +54,7 @@
                         <DataGridTextColumn
                                  Binding="{Binding Path=Grades}"
                                  Header="Оценки"
-                                 MinWidth="100"
+                                 MinWidth="650"
                                  Width="auto"/>
                     </DataGrid.Columns>
                 </DataGrid>

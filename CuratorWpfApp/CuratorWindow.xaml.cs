@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace CuratorWpfApp
 {
@@ -81,5 +82,25 @@ namespace CuratorWpfApp
         {
             Navigate(new JournalPage(groupName));
         }
+
+        private void btnReportSemester_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Filter = "Документы Word (*.docx) | *docx"
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string s = null;
+                var reportSemester = new ReportSemester(groupName, openFileDialog.FileName, s);
+
+            }
+        }
+
+        private void btnReportCourse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

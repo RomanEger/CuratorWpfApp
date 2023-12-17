@@ -44,11 +44,19 @@ namespace CuratorWpfApp.Pages.Curator
 
         private async void btnDelStudent_Click(object sender, RoutedEventArgs e)
         {
-            if(MessageBox.Show("Вы уверены, что хотите удалить студента из списка?", "Удаление", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                await sqlService.DeleteStudentAsync(GetId());
-                GetStudentsAsync();
-            }
+            //тут будет всплывающее окно с подтверждением и выбором действия (отчисление/перевод),
+            //ввод описания приказа, выбор даты (Now по умолчанию)
+
+            
+            //if(MessageBox.Show("Вы уверены, что хотите удалить студента из списка?", "Удаление", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            //{
+            //    await sqlService.ChangeStudentStatusAsync(
+            //        GetId(),
+            //        groupName,
+            //        "... приказ X ...",
+            //        DateTime.Now.ToString("d"));
+            //    GetStudentsAsync();
+            //}
         }
 
         private async void btnUpdStudent_Click(object sender, RoutedEventArgs e)
