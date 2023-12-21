@@ -93,13 +93,7 @@ namespace CuratorWpfApp
             {
                 string s = null;
                 var reportSemester = new ReportSemester(groupName, openFileDialog.FileName, s);
-
             }
-        }
-
-        private void btnReportCourse_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
     }

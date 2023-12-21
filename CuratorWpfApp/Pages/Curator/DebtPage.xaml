@@ -22,6 +22,25 @@
                     Click="btnBack_Click"/>
                 <StackPanel
                     HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <RadioButton
+                            Checked="Rb1Semester_OnChecked"
+                            Content="1 семестр"
+                            Name="rb1Semester"
+                            MinWidth="110"
+                            Margin="5"
+                            VerticalContentAlignment="Center"
+                            />
+                        <RadioButton
+                            Checked="Rb2Semester_OnChecked"
+                            Content="2 семестр"
+                            Name="rb2Semester"
+                            MinWidth="110"
+                            Margin="5"
+                            VerticalContentAlignment="Center"
+                            />
+                    </StackPanel>
                     <DataGrid
                         x:Name="dgDebts">
                         <DataGrid.Columns>

@@ -12,12 +12,16 @@ namespace CuratorWpfApp.Pages.Curator
     public partial class DebtPage : Page
     {
         string groupName;
-        private int semester ;
+        private int semester;
         public DebtPage(string groupName)
         {
             InitializeComponent();
             this.groupName = groupName;
             semester = DateTime.Now.Month < 9 ? 2 : 1;
+            if (semester == 1)
+                rb1Semester.IsChecked = true;
+            else
+                rb2Semester.IsChecked = true;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -26,6 +30,11 @@ namespace CuratorWpfApp.Pages.Curator
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await FillingDg();
+        }
+
+        private async Task FillingDg()
         {
             SqlQueryService sqlService = new();
 
@@ -47,6 +56,26 @@ namespace CuratorWpfApp.Pages.Curator
                     debtList.ElementAt(i).DisciplineName = "";
 
             dgDebts.ItemsSource = debtList;
+
+        }
+
+
+        private async void Rb1Semester_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if(semester == 1)
+                return;
+
+            semester = 1;
+            await FillingDg();
+        }
+
+        private async void Rb2Semester_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if(semester == 2)
+                return;
+
+            semester = 2;
+            await FillingDg();
         }
     }
 }
