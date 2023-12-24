@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace CuratorWpfApp.Models.Enitities
 {
-    class Groups
+    internal class Specialities
     {
-        public string Title {  get; set; }
-
-        public int Speciality_id { get; set; }
+        int Id { get; set; }
+        string Name { get; set; }
     }
 }

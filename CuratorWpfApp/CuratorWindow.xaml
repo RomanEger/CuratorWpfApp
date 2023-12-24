@@ -142,7 +142,17 @@
                             </StackPanel>
                         </TreeViewItem.Header>
                     </TreeViewItem>
-                    
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
+                                    Name="btnManageGrades"
+                                    Click="BtnManageGrades_OnClick"
+                                    Style="{StaticResource btnMenuTreeViewStyle}"
+                                    Content="Ред. оценки"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
                 </TreeViewItem>
             </TreeView>
         </StackPanel>

@@ -231,17 +231,32 @@ namespace CuratorWpfApp.Models.ServicesDB
         {
             public string Full_name { get; set; }
             public string Grades { get; set; }
+            public string Id { get; set; }
+            private string dateL = string.Empty;
+            public string DateL
+            {
+                get => dateL.Replace(" 00:00:00", "");
+                set => dateL = value;
+            }
         }
         public async Task<IEnumerable<View>> GetJournalAsync(string groupName, int disciplineId, int semester)
         {
             using(IDbConnection db = new SqlConnection(conStr))
             {
                 return await db.QueryAsync<View>(
-                    "select " +
+                    "SELECT " +
                     "z.Full_name, " +
                     "(SELECT Grade FROM GradesT " +
                     $"WHERE Discipline_id = {disciplineId} AND Student_id = z.Id AND Semester = {semester}" +
-                    $"FOR xml path('')) 'Grades' " +
+                    $"FOR xml path('')) AS 'Grades', " +
+                    "(SELECT Id FROM GradesT " +
+                    $"WHERE Discipline_id = {disciplineId} AND Student_id = z.Id AND Semester = {semester}" +
+                    $"FOR xml path('')) AS 'Id', " +
+                    "(SELECT DateL FROM DateLessonsT " +
+					"JOIN GradesT "+
+					"ON GradesT.StudyDateId=DateLessonsT.Id "+
+                    $"WHERE Discipline_id = {disciplineId} AND Student_id = z.Id AND Semester = {semester} "+
+                    "FOR xml path('')) AS 'DateL' "+
                     $"from StudentsT z " +
                     $"inner join GradesT n " +
                     $"on n.Student_id = z.Id " +
@@ -397,6 +412,53 @@ namespace CuratorWpfApp.Models.ServicesDB
 
                     "SELECT @goodProcent;";
                 return await db.QueryFirstOrDefaultAsync<int>(q);
+            }
+        }
+
+        public async Task<IEnumerable<DateLessons>> GetDateLessons()
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryAsync<DateLessons>("SELECT * FROM DateLessonsT");
+            }
+        }
+
+        public async Task<IEnumerable<DateLessons>> AddNewDateLesson(string ss)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                await db.ExecuteAsync("INSERT DateLessonsT " +
+                                      $"VALUES ('{ss}')");
+                return await db.QueryAsync<DateLessons>("SELECT TOP 1 * FROM DateLessonsT " +
+                                                        "ORDER BY Id DESC") ?? throw new Exception("Не удалось найти дату");
+            }
+        }
+
+        public async Task<int?> GetGradeByFilters(int studentId, int disciplineId, int studyDateId)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryFirstOrDefaultAsync<int?>("SELECT Grade FROM GradesT " +
+                                                               $"WHERE Student_id={studentId} AND Discipline_id={disciplineId} AND StudyDateId={studyDateId}");
+            }
+        }
+
+        public async Task AddOrUpdateGrade(int studentId, int disciplineId, int studyDateId, int semester, int grade)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                var a = await db.QueryFirstOrDefaultAsync<int?>(
+                    "SELECT Grade FROM GradesT " +
+                    $"WHERE Student_id={studentId} AND Discipline_id={disciplineId} AND StudyDateId={studyDateId} AND Semester={semester}");
+                if (a == null)
+                    await db.ExecuteAsync(
+                        "INSERT GradesT " +
+                            $"VALUES({studentId}, {disciplineId}, {grade}, {semester}, {studyDateId})");
+                else
+                    await db.ExecuteAsync(
+                        "UPDATE GradesT " +
+                            $"SET Grade={grade} " +
+                            $"WHERE Student_id={studentId} AND Discipline_id={disciplineId} AND StudyDateId={studyDateId} AND Semester={semester}");
             }
         }
     }

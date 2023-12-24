@@ -5,10 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CuratorWpfApp"
         mc:Ignorable="d"
-        Title="AdminWindow" Height="450" Width="800"
+        Title="AdminWindow" Height="466" Width="1050"
+        MinHeight="466"
+        MinWidth="1050"
         SizeToContent="WidthAndHeight"
+        WindowStyle="SingleBorderWindow"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="175"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle
+            Fill="#bde0ff"
+            Grid.Column="1"/>
+        <StackPanel
+                Grid.Column="0"
+                Name="spLeft"
+                Background="#b0e6fd" >
+                <Button
+                    x:Name="btnExitAcc"
+                    Click="BtnExitAcc_OnClick"
+                    Content="Покинуть аккаунт"
+                    Style="{StaticResource btnExitAccountStyle}"/>
+                <Label Content="Меню"
+                           HorizontalContentAlignment="Center"
+                           Margin="0 5"
+                           FontWeight="SemiBold"/>
+               
+            </StackPanel>
+
+        <Frame 
+            Grid.Column="1"
+            x:Name="frameMain"
+            MinWidth="800"
+            MinHeight="450"
+            NavigationUIVisibility="Hidden"
+            Background="AliceBlue"/>
     </Grid>
 </Window>

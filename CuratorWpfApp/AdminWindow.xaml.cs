@@ -23,5 +23,19 @@ namespace CuratorWpfApp
         {
             InitializeComponent();
         }
+
+        private void BtnExitAcc_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(
+                    "Вы уверены, что хотите выйти из аккаунта?",
+                    "Выход",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                var mainWindow = new MainWindow();
+                mainWindow.Show();
+                Close();
+            }
+        }
     }
 }

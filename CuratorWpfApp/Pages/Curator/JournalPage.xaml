@@ -14,13 +14,13 @@
             <StackPanel>
                 <Button 
                      HorizontalAlignment="Right"
-                     Margin="10"
                      Style="{StaticResource btnExitAccountStyle}"
                      MinWidth="80"
                      Content="Назад"
                      Name="btnBack"
                      Click="btnBack_Click"/>
-                <DockPanel>
+                <DockPanel
+                    Margin="15 0">
                     <RadioButton
                         Checked="btn1Semester_Checked"
                         MinWidth="110"
@@ -35,10 +35,11 @@
                         VerticalContentAlignment="Center"
                         Content="2 семестр"
                         x:Name="btn2Semester"/>
-                    <Label Content="Выбрать дисциплину"/>
+                    <Label Content="Выбрать дисциплину"
+                           Margin="5 0"/>
                     <ComboBox
                         SelectionChanged="cmbJournal_SelectionChanged"
-                        Margin="10"
+                        Margin="0 10"
                         MinWidth="120"
                         Name="cmbJournal"/>
                 </DockPanel>
@@ -58,6 +59,12 @@
                                  Width="auto"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                <Button 
+                    MinWidth="150"
+                    Content="Добавить оценки"
+                    Click="ButtonBase_OnClick"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource btnMenuStyle}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -65,11 +65,17 @@ namespace CuratorWpfApp.Pages.Curator
 
                 var l = await sqlService.GetJournalAsync(groupName, idDiscipline, semester);
                 var arr = l.ToArray();
+                var listId = new List<int>(arr.ElementAt(0).Id.Length/3);
                 for (int i = 0; i < arr.Length; i++)
                 {
                     arr[i].Grades = arr[i].Grades.Replace("</Grade><Grade>", " | ");
                     arr[i].Grades = arr[i].Grades.Replace("<Grade>", "");
                     arr[i].Grades = arr[i].Grades.Replace("</Grade>", "");
+                    arr[i].Id = arr[i].Id.ToString().Replace("<Id>", "").Replace("</Id>", "");
+                    foreach (var VARIABLE in arr[i].Id)
+                    {
+                        listId.Add(int.Parse(VARIABLE.ToString()));
+                    }
                 }
                 dgJournal.ItemsSource = arr;
 
@@ -94,6 +100,11 @@ namespace CuratorWpfApp.Pages.Curator
             semester = 2;
             if(cmbJournal.SelectedItem != null) 
                 await FillingDg();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            MyFrame.frame.Navigate(new AddOrUpdateGradesPage(groupName));
         }
     }
 }

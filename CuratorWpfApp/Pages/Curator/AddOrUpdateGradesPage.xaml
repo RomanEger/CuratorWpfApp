@@ -22,13 +22,55 @@
                     Click="btnBack_OnClick"/>
                 <DockPanel
                     Margin="15 0 15 0">
-                    <Label Content="Выбрать дисциплину"/>
+                    <Label Content="Выбрать дисциплину"
+                           Width="170"/>
                     <ComboBox
                         SelectionChanged="cmbJournal_OnSelectionChanged"
                         Margin="15 10 0 10"
                         MinWidth="120"
                         Name="cmbJournal"/>
                 </DockPanel>
+                <DockPanel
+                    Margin="15 0 15 0">
+                    <Label Content="Выбрать студента"
+                           Width="170"/>
+                    <ComboBox
+                        SelectionChanged="CmbStudents_OnSelectionChanged"
+                        Margin="15 10 0 10"
+                        MinWidth="120"
+                        Name="cmbStudents"/>
+                </DockPanel>
+                <StackPanel Orientation="Horizontal"
+                    Margin="15 0 15 0">
+                    <Label Content="Выбрать дату"
+                           Width="170"/>
+                    <DatePicker
+                        Name="LessonDatePicker"
+                        Margin="15 10 0 10"
+                        MinWidth="125"
+                        SelectedDateChanged="DatePicker_OnSelectedDateChanged"
+                        />
+                </StackPanel>
+                <StackPanel 
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Label
+                        Content="Оценка"
+                        Name="LabelGrade"/>
+                    <TextBox
+                        Name ="tbGrade"
+                        MaxLength="1"
+                        MinWidth="23"
+                        HorizontalContentAlignment="Center"
+                        Margin="15 5"
+                        Style="{StaticResource tbLoginStyle}"/>
+                </StackPanel>
+                    <Button 
+                        HorizontalAlignment="Center"
+                        Content="Сохранить"
+                        Click="ButtonBase_OnClick"
+                        MinWidth="100"
+                        Style="{StaticResource btnMenuStyle}"/>
                 <DataGrid
                     HorizontalAlignment="Left"
                     Name="dgJournal">

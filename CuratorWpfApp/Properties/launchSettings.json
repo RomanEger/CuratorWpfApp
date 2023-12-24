@@ -2,7 +2,8 @@
   "profiles": {
     "CuratorWpfApp": {
       "commandName": "Project",
-      "workingDirectory": "D:\\projectsVS\\College\\CuratorWpfApp\\CuratorWpfApp"
+      "workingDirectory": "D:\\projectsVS\\College\\CuratorWpfApp\\CuratorWpfApp",
+      "hotReloadEnabled": false
     }
   }
 }

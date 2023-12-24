@@ -96,5 +96,9 @@ namespace CuratorWpfApp
             }
         }
 
+        private void BtnManageGrades_OnClick(object sender, RoutedEventArgs e)
+        {
+            Navigate(new AddOrUpdateGradesPage(groupName));
+        }
     }
 }
