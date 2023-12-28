@@ -63,12 +63,6 @@ namespace CuratorWpfApp.Pages
                     curatorWindow.Show();
                     Application.Current.MainWindow.Close();
                 }
-                else if(r.Role_id == 2)
-                {
-                    AdminWindow adminWindow = new AdminWindow();
-                    adminWindow.Show();
-                    Application.Current.MainWindow.Close();
-                }
             }
             catch (Exception ex)
             {
