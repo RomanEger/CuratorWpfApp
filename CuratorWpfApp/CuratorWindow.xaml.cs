@@ -100,5 +100,10 @@ namespace CuratorWpfApp
         {
             Navigate(new AddOrUpdateGradesPage(groupName));
         }
+
+        private void BtnAllFinalGrades_OnClick(object sender, RoutedEventArgs e)
+        {
+            Navigate(new FinalGradesPage(groupName));
+        }
     }
 }

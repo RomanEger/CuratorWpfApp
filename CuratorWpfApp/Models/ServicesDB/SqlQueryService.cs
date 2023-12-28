@@ -243,7 +243,7 @@ namespace CuratorWpfApp.Models.ServicesDB
         {
             using(IDbConnection db = new SqlConnection(conStr))
             {
-                return await db.QueryAsync<View>(
+                var a = await db.QueryAsync<View>(
                     "SELECT " +
                     "z.Full_name, " +
                     "(SELECT Grade FROM GradesT " +
@@ -260,7 +260,9 @@ namespace CuratorWpfApp.Models.ServicesDB
                     $"from StudentsT z " +
                     $"inner join GradesT n " +
                     $"on n.Student_id = z.Id " +
+                    $"WHERE Group_name='{groupName}' " +
                     $"group by z.Full_name, z.Id");
+                return a.Where(x => x.Grades != null);
             }
         }
 
@@ -460,6 +462,226 @@ namespace CuratorWpfApp.Models.ServicesDB
                             $"SET Grade={grade} " +
                             $"WHERE Student_id={studentId} AND Discipline_id={disciplineId} AND StudyDateId={studyDateId} AND Semester={semester}");
             }
+        }
+
+        public async Task<IEnumerable<int>> GetGradeStudentIdCollection(int semester, string groupName)
+        {
+            using IDbConnection db = new SqlConnection(conStr) ;
+            return await db.QueryAsync<int>(
+                "SELECT DISTINCT Student_id FROM GradesT, StudentsT " +
+                $"WHERE Semester={semester} AND Group_name='{groupName}'");
+        }
+        
+        public async Task<IEnumerable<int>> GetGradeDisciplineIdCollection(int semester, string groupName)
+        {
+            using IDbConnection db = new SqlConnection(conStr) ;
+            return await db.QueryAsync<int>(
+                "SELECT DISTINCT Discipline_id FROM GradesT, StudentsT " +
+                $"WHERE Semester={semester} AND Group_name='{groupName}'");
+        }
+
+        public async Task AddOrUpdateFinalGrades(int semester, int course, string groupName, int minCountGrades=3)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                var listStudentId = await GetGradeStudentIdCollection(semester, groupName);
+
+                var listDisciplineId = await GetGradeDisciplineIdCollection(semester, groupName);
+
+                foreach (var studentId in listStudentId)
+                {
+                    foreach (var disciplineId in listDisciplineId)
+                    {
+                        await db.ExecuteAsync(
+                            "DECLARE @count INT, @countFinal INT, @studentId INT, @disciplineId INT, @grade INT, @semester INT, @course INT;" +
+                            $"SET @studentId = {studentId}; " +
+                            $"SET @disciplineId = {disciplineId}; " +
+                            $"SET @semester = {semester}; " +
+                            $"SET @course = {course}; " +
+                            "SET @count = " +
+                            "   (SELECT COUNT(*) FROM GradesT " +
+                            "   WHERE Student_id=@studentId AND Discipline_id=@disciplineId AND Semester=@semester); " +
+                            $"IF @count >= {minCountGrades} " + 
+                            "  BEGIN " +
+                            "   SET @grade = " +
+                            "       (SELECT ROUND(AVG(Grade * 1.0), 0) FROM GradesT " +
+                            "       WHERE Student_id=@studentId AND Discipline_id=@disciplineId AND Semester=@semester); " +
+                            "   SET @countFinal = " +
+                            "       (SELECT COUNT(*) FROM Final_GradesT " +
+                            "       WHERE Student_id=@studentId AND Discipline_id=@disciplineId AND Semester=@semester AND Course=@course);" +
+                            "   IF @countFinal<1" +
+                            "     BEGIN " +
+                            "       INSERT Final_GradesT " +
+                            "       VALUES(@studentId, @disciplineId, @grade, @semester, @course); " +
+                            "     END; " +
+                            "   ELSE " +
+                            "     BEGIN" +
+                            "      UPDATE Final_GradesT " +
+                            "      SET Grade=@grade " +
+                            "      WHERE Student_id=@studentId AND Discipline_id=@disciplineId;" +
+                            "     END; " +
+                            "  END; " 
+                            
+                            );
+                    }
+                }
+            }
+        }
+
+        public class FinalView
+        {
+            public string StudentFullName { get; set; }
+            public string DisciplineName { get; set; }
+            public int Grade { get; set; }
+            public int Semester { get; set; }
+
+            public int Course { get; set; }
+        }
+
+        /// <summary>
+        /// Sort by groupName
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<FinalView>> GetFinalJournal(string groupName) 
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryAsync<FinalView>(
+                    "SELECT Full_name AS StudentFullName, Name as DisciplineName, Grade, Semester, Course FROM Final_GradesT as f " +
+                    "JOIN StudentsT as s " +
+                    "ON s.Id=f.Student_id " +
+                    "JOIN Academic_disciplineT AS a " +
+                    "ON a.Id=f.Discipline_id " +
+                    $"WHERE s.Group_name='{groupName}' " +
+                    "ORDER BY s.Full_Name, a.Name;");
+            }
+        }
+
+        /// <summary>
+        /// Sort by groupName and studentId or disciplineId
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="Name">student or discipline Name</param>
+        /// <param name="isStudent">true=student; false=discipline</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<FinalView>> GetFinalJournal(string groupName, string Name, bool isStudent)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                if (isStudent)
+                    return await db.QueryAsync<FinalView>(
+                        "SELECT Full_name AS StudentFullName, Name as DisciplineName, Grade, Semester, Course FROM Final_GradesT as f " +
+                        "JOIN StudentsT as s " +
+                        "ON s.Id=f.Student_id " +
+                        "JOIN Academic_disciplineT AS a " +
+                        "ON a.Id=f.Discipline_id " +
+                        $"WHERE s.Group_name='{groupName}' AND s.Full_name='{Name}'" +
+                        "ORDER BY s.Full_Name, a.Name;");
+                return await db.QueryAsync<FinalView>(
+                    "SELECT Full_name AS StudentFullName, Name AS DisciplineName, Grade, Semester, Course FROM Final_GradesT as f " +
+                    "JOIN StudentsT as s " +
+                    "ON s.Id=f.Student_id " +
+                    "JOIN Academic_disciplineT AS a " +
+                    "ON a.Id=f.Discipline_id " +
+                    $"WHERE s.Group_name='{groupName}' AND a.Name='{Name}'" +
+                    "ORDER BY s.Full_Name, a.Name;");
+            }
+        }
+
+        /// <summary>
+        /// Sort by groupName and studentName and disciplineName
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="studentName"></param>
+        /// <param name="disciplineName"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<FinalView>> GetFinalJournal(string groupName, string studentName, string disciplineName)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                
+                return await db.QueryAsync<FinalView>(
+                    "SELECT Full_name AS StudentFullName, Name AS DisciplineName, Grade, Semester, Course FROM Final_GradesT as f " +
+                    "JOIN StudentsT as s " +
+                    "ON s.Id=f.Student_id " +
+                    "JOIN Academic_disciplineT AS a " +
+                    "ON a.Id=f.Discipline_id " +
+                    $"WHERE s.Group_name='{groupName}' AND s.Full_name='{studentName}' AND a.Name='{disciplineName}' " +
+                    "ORDER BY s.Full_Name, a.Name;");
+            }
+        }
+
+        public async Task<IEnumerable<Specialities>> GetSpecialities()
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryAsync<Specialities>("SELECT * FROM SpecialitiesT");
+            }
+        }
+
+        public async Task<IEnumerable<Groups>> GetGroups()
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                return await db.QueryAsync<Groups>("SELECT * FROM Groups");
+            }
+        }
+
+        public async Task AddOrUpdateGroups(string groupName, int specialityId)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                await db.ExecuteAsync(
+                    "DECLARE @title NVARCHAR(10), @specialityId INT;" +
+                    $"SET @title='{groupName}'; " +
+                    $"SET @specialityId={specialityId}; " +
+                    "IF EXISTS(SELECT * FROM GroupsT WHERE Title=@title) " +
+                    "UPDATE GroupsT " +
+                    "SET Speciality_id=@specialityId " +
+                    "WHERE Title=@title; " +
+                    "ELSE " +
+                    "INSERT GroupsT " +
+                    "VALUES (@title, @specialityId);"
+                    );
+            }
+        }
+
+        public async Task AddSpeciality(string name)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                await db.ExecuteAsync(
+                    $"IF NOT EXISTS(SELECT * FROM SpecialitiesT WHERE Name='{name}') " +
+                    $"INSERT INTO SpecialitiesT VALUES('{name}') ");
+            }
+        }
+
+        public async Task UpdateSpeciality(string oldName, string newName)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                await db.ExecuteAsync(
+                    $"UPDATE SpecialitiesT " +
+                    $"SET Name='{newName}' " +
+                    $"WHERE Name='{oldName}'");
+            }
+        }
+
+        public async Task UpdateSpeciality(int id, string newName)
+        {
+            using (IDbConnection db = new SqlConnection(conStr))
+            {
+                await db.ExecuteAsync(
+                    $"UPDATE SpecialitiesT " +
+                    $"SET Name='{newName}' " +
+                    $"WHERE Id={id}");
+            }
+        }
+
+        public async Task AddCurator()
+        {
+
         }
     }
 }

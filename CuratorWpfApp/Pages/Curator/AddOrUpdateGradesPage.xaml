@@ -72,7 +72,7 @@
                         MinWidth="100"
                         Style="{StaticResource btnMenuStyle}"/>
                 <DataGrid
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     Name="dgJournal">
                     <DataGrid.Columns>
                         <DataGridTextColumn

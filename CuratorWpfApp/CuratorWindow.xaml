@@ -149,7 +149,18 @@
                                     Name="btnManageGrades"
                                     Click="BtnManageGrades_OnClick"
                                     Style="{StaticResource btnMenuTreeViewStyle}"
-                                    Content="Ред. оценки"/>
+                                    Content="Редактировать"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <StackPanel>
+                                <Button 
+                                    Name="btnAllFinalGrades"
+                                    Click="BtnAllFinalGrades_OnClick"
+                                    Style="{StaticResource btnMenuTreeViewStyle}"
+                                    Content="Итоговые"/>
                             </StackPanel>
                         </TreeViewItem.Header>
                     </TreeViewItem>

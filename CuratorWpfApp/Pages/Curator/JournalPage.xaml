@@ -44,7 +44,7 @@
                         Name="cmbJournal"/>
                 </DockPanel>
                 <DataGrid
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Center"
                         Name="dgJournal">
                     <DataGrid.Columns>
                         <DataGridTextColumn

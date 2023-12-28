@@ -1,0 +1,104 @@
+﻿<Page x:Class="CuratorWpfApp.Pages.Curator.FinalGradesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CuratorWpfApp.Pages.Curator"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Loaded="FinalGradesPage_OnLoaded"
+      Title="FinalGradesPage">
+
+    <Grid>
+        <ScrollViewer>
+            <StackPanel>
+                <Button 
+                    HorizontalAlignment="Right"
+                    Margin="10"
+                    Style="{StaticResource btnExitAccountStyle}"
+                    MinWidth="80"
+                    Content="Назад"
+                    Name="BtnBack"
+                    Click="BtnBack_OnClick"/>
+                <DockPanel
+                    Margin="15 0 15 0">
+                    <Label Content="Выбрать дисциплину"
+                        Width="170"/>
+                    <ComboBox
+                        SelectionChanged="CmbDiscipline_OnSelectionChanged"
+                        Margin="15 10 0 10"
+                        MinWidth="120"
+                        Name="CmbDiscipline"/>
+                </DockPanel>
+                <DockPanel
+                    Margin="15 0 15 0">
+                    <Label Content="Выбрать студента"
+                        Width="170"/>
+                    <ComboBox
+                        SelectionChanged="CmbStudents_OnSelectionChanged"
+                        Margin="15 10 0 10"
+                        MinWidth="120"
+                        Name="CmbStudents"/>
+                </DockPanel>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <DataGrid
+                            Name="DgJournal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                    Binding="{Binding Path=StudentFullName}"
+                                    Header="ФИО"
+                                    MinWidth="100"
+                                    MaxWidth="300"
+                                    Width="auto"/>
+                            <DataGridTextColumn
+                                    Binding="{Binding Path=DisciplineName}"
+                                    Header="Дисциплина"
+                                    MinWidth="100"
+                                    MaxWidth="300"
+                                    Width="auto"/>
+                            <DataGridTextColumn
+                                    Binding="{Binding Path=Grade}"
+                                    Header="Оценка"
+                                    MinWidth="50"
+                                    Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid
+                        Name="DgJournalDetailed">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding Path=StudentFullName}"
+                                Header="ФИО"
+                                MinWidth="100"
+                                MaxWidth="300"
+                                Width="auto"/>
+                            <DataGridTextColumn
+                                Binding="{Binding Path=DisciplineName}"
+                                Header="Дисциплина"
+                                MinWidth="100"
+                                MaxWidth="300"
+                                Width="auto"/>
+                            <DataGridTextColumn
+                                Binding="{Binding Path=Grade}"
+                                Header="Оценка"
+                                MinWidth="50"
+                                Width="auto"/>
+                            <DataGridTextColumn
+                                Binding="{Binding Path=Semester}"
+                                Header="Семестр №"
+                                MinWidth="50"
+                                Width="auto"/>
+                            <DataGridTextColumn
+                                Binding="{Binding Path=Course}"
+                                Header="Курс №"
+                                MinWidth="50"
+                                Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
